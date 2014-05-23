@@ -115,7 +115,7 @@ function dgx_donate_save_paypalstd_settings_form()
 }
 
 /******************************************************************************************************/
-function dgx_donate_show_paypalstd_donation_form($content)
+function dgx_donate_show_paypalstd_donation_form($content) //RAEDIT
 {
 	// If we are the actively selected gateway
 	$paymentGateway = get_option('dgx_donate_payment_gateway');
@@ -146,7 +146,7 @@ function dgx_donate_show_paypalstd_donation_form($content)
 		}
 
 		$content = dgx_donate_get_donor_section($content);
-		$content = dgx_donate_get_billing_section($content);
+		//$content = dgx_donate_get_billing_section($content);
 		$content = dgx_donate_paypalstd_payment_section($content);
 
 		// Close the outermost container
