@@ -5,8 +5,8 @@
   * GPL2
   */ 
 
-// Load WordPress
-include "../../../wp-config.php";
+// Load WordPress   Edit RA
+include "../../../../wp-config.php";
 
 // Load Seamless Donations Core
 include_once "./dgx-donate.php";
@@ -19,10 +19,17 @@ class Dgx_Donate_IPN_Handler {
 	var $session_id     = '';
 	var $transaction_id = '';
 
-	public function __construct() {
+	public function __construct() {	
+		$debug_log = get_option( 'dgx_donate_log' ); //ra edit
+		$debug_log = '';		
+		update_option( 'dgx_donate_log', $debug_log );
+
 		dgx_donate_debug_log( '----------------------------------------' );
 		dgx_donate_debug_log( 'IPN processing start' );
-
+		dgx_donate_debug_log( '----------------------------------------' );
+		dgx_donate_debug_log( '- RAW IPN INFO -------------------------' );
+ 		dgx_donate_debug_log( print_r($_POST,true) );
+		dgx_donate_debug_log( '----------------------------------------' );
 		// Grab all the post data
 		$this->post_data = $_POST;
 
@@ -47,6 +54,23 @@ class Dgx_Donate_IPN_Handler {
 		}
 
 		dgx_donate_debug_log( 'IPN processing complete' );
+		
+		$debug_log = get_option( 'dgx_donate_log' );
+		$body = '';
+		foreach ($debug_log as $debug_log_line)
+		{
+			$body .= $debug_log_line . "\n";
+		}
+		
+		$headers = '';
+		
+		
+		$mail_sent = wp_mail( 'someone@m.evernote.com', 'Seamless donation event @CopSub_Log', $body, $headers );
+
+
+		
+		dgx_donate_debug_log('EN Mail Status: ' . $mail_sent);				
+
 	}
 
 	function configure_for_production_or_test() {
@@ -157,6 +181,9 @@ class Dgx_Donate_IPN_Handler {
 				dgx_donate_debug_log( "Transaction ID {$this->transaction_id} already handled - ignoring" );
 			}
 
+			$member_info = array();  //EDIT RA
+
+
 			if ( ! empty( $donation_id ) )  {
 				// Update the raw paypal data
 				update_post_meta( $donation_id, '_dgx_donate_transaction_id', $this->transaction_id );
@@ -168,12 +195,119 @@ class Dgx_Donate_IPN_Handler {
 				update_post_meta( $donation_id, '_dgx_donate_donation_currency', $currency_code );
 			}
 
+
+//-----------------------------------------------------------------//
+
+				//EDIT RA: 
+
+				$donation = get_post_custom($donation_id);
+				dgx_donate_debug_log('Donation: ' . print_r($donation,true));
+
+				if(!empty($donation['_dgx_donate_repeating'][0])){
+					//create member info
+					$member_info = array();
+					foreach($donation as $key => $val){
+						if(strpos($key,'_dgx_donate_donor_') === 0){
+							$member_info[strtr($key,array('_dgx_donate_donor_' => ''))] = 	$donation[$key][0];					
+						}					
+						if(strpos($key,'_dgx_donate_add_to_mailing_list') === 0){
+							$member_info[strtr($key,array('_dgx_donate_add_to_mailing_list' => 'mailing_list'))] = 	$donation[$key][0];					
+						}					
+					}
+					
+					
+					
+					
+					
+					
+					
+
+					/* Setup new user profile */
+					$member_info['user_login'] = $member_info['email'];
+					$member_info['user_pass'] = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+					$member_info['user_email'] = $member_info['email'];
+					$member_info['user_nicename'] = $member_info['first_name'] . ' ' . $member_info['last_name'];
+					$member_info['display_name'] = $member_info['first_name'] . ' ' . $member_info['last_name'];
+					$member_info['nickname'] = $member_info['first_name'] . ' ' . $member_info['last_name'];
+					$member_info['role'] = 'supporter';
+					$member_info['address'] = $member_info['address'] .', '. $member_info['address2'];
+					if ($member_info['mailing_list'] == 'on') {
+						$member_info['mailinglist'] = 'Yes';
+					}
+
+					dgx_donate_debug_log('Member info: ' . print_r($member_info,true));
+
+					/* Does the user already exist in the db (email) */
+					$existingUser = get_user_by( 'email', $member_info['email'] );
+					
+					if ( $existingUser === false ) {					
+				
+						/* If user doesn't exist, create new user */
+						$countries = dgx_donate_get_countries(); // Used to convert countrycodes
+						$member_info['country'] = $countries[$member_info['country']];
+					
+						$user_id = wp_insert_user( $member_info );
+                        
+						// added by KB: additional fields to member
+						update_user_meta( $user_id, 'user_phone',   $member_info['phone'] );
+						update_user_meta( $user_id, 'user_adress',  $member_info['address'] );
+						update_user_meta( $user_id, 'user_zip',     $member_info['zip'] );
+						update_user_meta( $user_id, 'country', $member_info['country'] );
+						update_user_meta( $user_id, 'city', $member_info['city'] );
+						update_user_meta( $user_id, 'mailinglist', $member_info['mailinglist'] );
+
+						$new_user = get_user_by( 'email', $member_info['email'] );
+						dgx_donate_debug_log('New user created: ' . print_r($new_user, true));
+
+
+
+					} else {
+
+						/* If User exist update to supporter if only subscriber now */
+						dgx_donate_debug_log('Existing user found: ' . print_r($existingUser, true));
+						
+						$user_id = $existingUser -> ID;						
+						$user_role = $existingUser->roles[0];
+						
+						if ( $user_role == 'subscriber') {
+							$user_result = wp_update_user( array( 'ID' => $user_id, 'role' => 'supporter' ) );
+						
+							$updated_user = get_user_by( 'id' , $user_id );
+						
+							if ( is_wp_error( $user_result ) ) {
+								dgx_donate_debug_log('User update error: ' . print_r($user_result, true));
+							} else {
+								dgx_donate_debug_log('User updated to supporter: ' . print_r($updated_user, true));
+							}
+						} else {
+							dgx_donate_debug_log('User not updated. Current role is: ' . $user_role);
+						}
+						
+						
+
+					}
+
+
+
+
+
+
+
+
+				} else {
+				
+					dgx_donate_debug_log('One-time donation. User not created or updated ');
+				}
+
+//-----------------------------------------------------------------//
+
+
 			// @todo - send different notification for recurring?
 
 			// Send admin notification
 			dgx_donate_send_donation_notification( $donation_id );
 			// Send donor notification
-			dgx_donate_send_thank_you_email( $donation_id );
+			dgx_donate_send_thank_you_email( $donation_id,"",(!empty($member_info['user_pass'])?$member_info['user_pass']:"") );
 		}
 	}
 
