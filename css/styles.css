@@ -7,13 +7,9 @@
 	border-radius: 8px;
 }
 
-.dgx-donate-form-section
-{
-	border: 1px solid #eee;
-	background: #fff;
-	padding: 32px;
-	margin: 0 0 24px;
-	border-radius: 4px;
+.dgx-donate-form-section {
+background: #fff;
+padding: 5px 32px 32px 32px;
 }
 
 .dgx-donate-form-section h2
@@ -118,5 +114,35 @@
 
 .dgx-donate-pay-disabled {
 	padding: 10px;
+}
+
+.dgx-type-membership, 
+.dgx-type-onetime {
+	float:left;
+    font: 700 16px/16px 'Roboto', sans-serif;
+    padding: 14px;
+    margin: 0 0 20px;
+    background: #000;
+    color: #fff;
+    text-transform: uppercase;
+	border: 0;
+	cursor: pointer;
+}
+
+.dgx-type-membership {
+	margin:0 10px 20px 0;
+}
+
+.dgx-type-membership.active, 
+.dgx-type-onetime.active {
+	background:#fd4907;
+}
+
+input.dgx-donate-pay-enabled,
+img.dgx-donate-pay-disabled {
+	float:right;
+	display:none;
+	padding:0 !important;
+	margin:0 !important;
 }
 
