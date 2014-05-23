@@ -55,6 +55,101 @@ function DgxDonateAddOnClickOther()
 	});
 }
 
+
+
+
+/* --------------------------------------------------------------------------------------------- */
+
+/* JR: select signup type */
+function DgxDonationTypeSelector(){
+	 
+	// added by KB 
+	//if ( window.location.hash.substring(1) == 'support' ) {
+	//	var timer = setInterval( function() {
+	//		
+	//		if ( jQuery('#dgx-donate-container #dgx-donate-repeating').length > 0 ) {
+	//			clearInterval( timer );
+	//			jQuery('#dgx-donate-container #dgx-donate-repeating').attr('disabled','disabled');
+	//		    jQuery('#dgx-donate-container #dgx-donate-repeating').val('');
+	//		    jQuery('.dgx-type-onetime').addClass('active');
+	//		}
+	//		
+	//	}, 60 );
+	//
+	//}
+
+    // added by KB
+    jQuery('input.dgx-donate-pay-enabled').attr({
+		'src': '/wp_blog/wp_content/plugins/seamless-donations-modified/images/submit.png'
+	}).show();
+	
+    // added by KB
+	jQuery('img.dgx-donate-pay-disabled').attr({
+		'src': '/wp_blog/wp_content/plugins/seamless-donations-modified/images/submit.png'
+	});
+	
+    // added by KB
+	jQuery('.dgx-donate-form-section p').addClass('clr');
+	var copyPriceSection = jQuery('.dgx-donate-form-section:eq(1)').clone();
+
+/* single donation --------------------------------------------------------------------------------------------- */
+
+
+	jQuery('#dgx-donate-container .dgx-type-onetime').on('click', function(){
+
+		// added by KB
+		jQuery('input[type="text"]').removeClass('dgx-donate-invalid-input');
+   
+		jQuery('#dgx-donate-container #dgx-donate-repeating').attr('disabled','disabled');
+		jQuery('#dgx-donate-container #dgx-donate-repeating').val('');
+
+        // added by KB
+		jQuery('#dgx-donate-container .dgx-type-membership').removeClass('active');
+		jQuery(this).removeClass('active').addClass('active');
+
+		jQuery('.dgx-type-membership-section').hide();
+		jQuery('.dgx-type-onetime-section').show();
+		jQuery('#dgx-donate-container #dgx-type-membership-checked').prop('checked',false);
+		jQuery('#dgx-donate-container #dgx-type-onetime-checked').prop('checked',true);
+		
+		return false;
+
+	});
+	
+/* Membership --------------------------------------------------------------------------------------------- */
+
+	jQuery('#dgx-donate-container .dgx-type-membership').on( 'click', function() {
+
+		// added by KB
+		jQuery('input[type="text"]').removeClass('dgx-donate-invalid-input');
+
+		jQuery('#dgx-donate-container #dgx-donate-repeating').removeAttr('disabled');
+		jQuery('#dgx-donate-container #dgx-donate-repeating').val('1');
+
+        // added by KB
+		jQuery('#dgx-donate-container .dgx-type-onetime').removeClass('active');
+		jQuery(this).removeClass('active').addClass('active');
+
+        // added by KB
+		jQuery('.dgx-type-onetime-section').hide();
+		jQuery('.dgx-type-membership-section').show();
+		jQuery('#dgx-donate-container #dgx-type-onetime-checked').prop('checked',false);
+		jQuery('#dgx-donate-container #dgx-type-membership-checked').prop('checked',true);
+
+
+		return false;
+
+	});
+
+
+/* --------------------------------------------------------------------------------------------- */
+}
+
+
+
+
+
+
 jQuery(document).ready(function() {	
 
 	// Hook up listener for checkboxes on expanders
@@ -67,6 +162,9 @@ jQuery(document).ready(function() {
 	
 	// Hook up special handling for the OTHER donation amount box
 	DgxDonateAddOnClickOther();
+	
+	//JR: Hook up type selector
+	DgxDonationTypeSelector()
 
 });
 
