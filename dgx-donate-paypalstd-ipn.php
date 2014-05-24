@@ -39,7 +39,12 @@ class Dgx_Donate_IPN_Handler {
 		// Extract the session and transaction IDs from the POST
 		$this->get_ids_from_post();
 
-		if ( ! empty( $this->session_id ) ) {
+		// CS modification: We want to store the donation information
+		// from donations that were setup in the old website
+		// This donations come without session_id in the custom dgxdonate parameters
+		// But this is all fine as long as the payment is VERIFIED by Paypal
+		// So we comment the following line:
+		// if ( ! empty( $this->session_id ) ) {
 			$response = $this->reply_to_paypal();
 
 			if ( "VERIFIED" == $response ) {
@@ -49,9 +54,9 @@ class Dgx_Donate_IPN_Handler {
 			} else {
 				$this->handle_unrecognized_ipn( $response );
 			}
-		} else {
-			dgx_donate_debug_log( 'Null IPN (Empty session id).  Nothing to do.' );
-		}
+		// } else {
+		// 	dgx_donate_debug_log( 'Null IPN (Empty session id).  Nothing to do.' );
+		// }
 
 		dgx_donate_debug_log( 'IPN processing complete' );
 		
@@ -306,8 +311,10 @@ class Dgx_Donate_IPN_Handler {
 
 			// Send admin notification
 			dgx_donate_send_donation_notification( $donation_id );
-			// Send donor notification
-			dgx_donate_send_thank_you_email( $donation_id,"",(!empty($member_info['user_pass'])?$member_info['user_pass']:"") );
+			// Send donor notification (only for donations set up within the new website)
+			if ( ! empty( $this->session_id ) ) {
+				dgx_donate_send_thank_you_email( $donation_id,"",(!empty($member_info['user_pass'])?$member_info['user_pass']:"") );
+			}
 		}
 	}
 
