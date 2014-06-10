@@ -179,7 +179,7 @@ function dgx_donate_debug_log($message)
 
 	$debug_log = get_option( 'dgx_donate_log' );
 
-	if ( empty( $debug_log )) {
+	if ( empty( $debug_log ) || !is_array($debug_log)) {
 		$debug_log = array();
 	}
 
