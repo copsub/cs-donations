@@ -120,6 +120,7 @@ class Dgx_Donate_IPN_Handler {
 					$done = true;
 				} else {
 					$response = fgets( $fp, 1024 );
+					dgx_donate_debug_log( print_r($response,true) );
 					$done = in_array( $response, array( "VERIFIED", "INVALID" ) );
 				}
 			} while ( ! $done );
