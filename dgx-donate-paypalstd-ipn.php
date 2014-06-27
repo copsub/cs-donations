@@ -306,8 +306,9 @@ class Dgx_Donate_IPN_Handler {
 
 			// Send admin notification
 			dgx_donate_send_donation_notification( $donation_id );
-			// Send donor notification (only for donations set up within the new website)
-			if ( ! empty( $this->session_id ) ) {
+			// Send donor notification (only for donations set up within the new website, and that are not recurring)
+			if ( ! empty( $this->session_id ) && !isset( $_POST[ "subscr_id" ] )) {
+				dgx_donate_debug_log("Sending thank you email to one time donor");
 				dgx_donate_send_thank_you_email( $donation_id,"",(!empty($member_info['user_pass'])?$member_info['user_pass']:"") );
 			}
 		}
