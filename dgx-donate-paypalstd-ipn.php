@@ -306,9 +306,26 @@ class Dgx_Donate_IPN_Handler {
 
 			// Send admin notification
 			dgx_donate_send_donation_notification( $donation_id );
-			// Send donor notification (only for donations set up within the new website, and that are not recurring)
-			if ( ! empty( $this->session_id ) && !isset( $_POST[ "subscr_id" ] )) {
-				dgx_donate_debug_log("Sending thank you email to one time donor");
+			$donation_from_old_site = $one_time_donation = $first_time_recurring = false;
+
+			if (!isset( $_POST[ "subscr_id" ] )){
+				$one_time_donation = true;
+			} else if (count(get_donations_by_meta( '_dgx_donate_session_id', $this->session_id, 1 )) == 1){
+				$first_time_recurring = true;
+			}
+			if (empty( $this->session_id )){
+				$donation_from_old_site = true;
+			}
+
+			dgx_donate_debug_log("one_time_donation: ".var_export($one_time_donation, true));
+			dgx_donate_debug_log("first_time_recurring: ".var_export($first_time_recurring, true));
+			dgx_donate_debug_log("donation_from_old_site: ".var_export($donation_from_old_site, true));
+
+			// Send donor notification when:
+			//   A. It's a one time donations
+			//   B. It's the first recurring donation (when the user subscribes). We exclude donations coming from old website.
+			if ($one_time_donation == true || $donation_from_old_site == false && $first_time_recurring == true){
+				dgx_donate_debug_log("Sending thank you email");
 				dgx_donate_send_thank_you_email( $donation_id,"",(!empty($member_info['user_pass'])?$member_info['user_pass']:"") );
 			}
 		}
