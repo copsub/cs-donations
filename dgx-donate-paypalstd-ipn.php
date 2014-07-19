@@ -215,9 +215,11 @@ class Dgx_Donate_IPN_Handler {
 
 			//COPENHAGEN SUBORBITALS CUSTOM CODE
 
+			// Load donation data into $donation variable
 			$donation = get_post_custom($donation_id);
 			dgx_donate_debug_log('Donation: ' . print_r($donation,true));
 
+			// Handle recurring donations created in the new website
 			if(!empty($donation['_dgx_donate_repeating'][0])){
 				//create member info
 				$member_info = array();
@@ -295,7 +297,7 @@ class Dgx_Donate_IPN_Handler {
 
 				}
 
-
+			// Handle recurring donations coming from the old website
 			} else if (isset( $_POST[ "subscr_id" ] )){
 
 				dgx_donate_debug_log('This is a recurring donation coming from the old website. Saving the subscr id in the session_id field, as a unique identifier of the subscriber:');
@@ -306,6 +308,12 @@ class Dgx_Donate_IPN_Handler {
 
 			} else {
 				dgx_donate_debug_log('One-time donation. User not created or updated ');
+			}
+
+			// Check the amount. If less than 100 DKK, send an email
+			if ($this->donation_smaller_than_supporter_minimum($donation)){
+				$low_amount_email = wp_mail( 'ignacio@ihuerta.net', 'A user has sent a recurring donation of less than the subscriber minimum', print_r($donation,true), '' );
+				dgx_donate_debug_log('Email sent about a donation of less than the subscriber minimum. Result: ' . $low_amount_email);
 			}
 
     	//-----------------------------------------------------------------//
@@ -348,6 +356,32 @@ class Dgx_Donate_IPN_Handler {
 		dgx_donate_debug_log( "IPN failed (unrecognized response) for sessionID {$this->session_id}" );
 		dgx_donate_debug_log( $paypal_response );
 	}
+
+	function donation_smaller_than_supporter_minimum($donation){
+
+    switch ($donation['_dgx_donate_donation_currency'][0]) {
+      case 'USD':
+        $minimum_amount = 18;
+        break;
+      case 'EUR':
+        $minimum_amount = 13;
+        break;
+      case 'DKK':
+        $minimum_amount = 100;
+        break;
+      default:
+        // If the donation is in a different currency, we want this method to always return true
+        // So we can check the donation and see what amount we want to accept as minimum
+        $minimum_amount = 1000000;
+    }
+
+    if ($donation['_dgx_donate_amount'][0] < $minimum_amount){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
 }
 
 $dgx_donate_ipn_responder = new Dgx_Donate_IPN_Handler();
