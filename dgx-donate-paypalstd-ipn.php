@@ -215,9 +215,11 @@ class Dgx_Donate_IPN_Handler {
 
 			//COPENHAGEN SUBORBITALS CUSTOM CODE
 
+			// Load donation data into $donation variable
 			$donation = get_post_custom($donation_id);
 			dgx_donate_debug_log('Donation: ' . print_r($donation,true));
 
+			// Handle recurring donations created in the new website
 			if(!empty($donation['_dgx_donate_repeating'][0])){
 				//create member info
 				$member_info = array();
@@ -290,12 +292,8 @@ class Dgx_Donate_IPN_Handler {
 					} else {
 						dgx_donate_debug_log('User not updated. Current role is: ' . $user_role);
 					}
-					
-					
-
 				}
-
-
+			// Handle recurring donations coming from the old website
 			} else if (isset( $_POST[ "subscr_id" ] )){
 
 				dgx_donate_debug_log('This is a recurring donation coming from the old website. Saving the subscr id in the session_id field, as a unique identifier of the subscriber:');
@@ -337,6 +335,11 @@ class Dgx_Donate_IPN_Handler {
 				dgx_donate_debug_log("Sending thank you email");
 				dgx_donate_send_thank_you_email( $donation_id,"",(!empty($member_info['user_pass'])?$member_info['user_pass']:"") );
 			}
+		}else{
+			// If payment_status is not "Completed", then something must have gone wrong.
+			// Send an email to check this IPN response manually
+			wp_mail( 'ignacio@ihuerta.net', 'Seamless Donations: Please check this IPN manually, because the payment_status variable != Completed', print_r($_POST,true), '' );
+			dgx_donate_debug_log('Email sent about a donation whose payment_status was not Completed');
 		}
 	}
 
