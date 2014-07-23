@@ -338,7 +338,7 @@ class Dgx_Donate_IPN_Handler {
 		}else{
 			// If payment_status is not "Completed", then something must have gone wrong.
 			// Send an email to check this IPN response manually
-			wp_mail( 'ignacio@ihuerta.net', 'Seamless Donations: Please check this IPN manually, because the payment_status variable != Completed', print_r($_POST,true), '' );
+			wp_mail( get_option('dgx_donate_notify_emails'), 'Seamless Donations: Please check this IPN manually, because the payment_status variable != Completed', print_r($_POST,true), '' );
 			dgx_donate_debug_log('Email sent about a donation whose payment_status was not Completed');
 		}
 	}
