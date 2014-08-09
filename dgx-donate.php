@@ -27,6 +27,7 @@ License: GPL2
  
 require_once 'dgx-donate-admin.php';
 require_once 'dgx-donate-paypalstd.php';
+require_once 'dgx-donate-cron-jobs.php';
 require_once 'inc/geography.php';
 require_once 'inc/currency.php';
 
