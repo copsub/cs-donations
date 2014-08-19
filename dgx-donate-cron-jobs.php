@@ -47,7 +47,7 @@
         LEFT JOIN ".$wpdb->prefix."postmeta m4 ON posts.id = m4.post_id AND m4.meta_key = '_dgx_donate_donation_currency'
 
         # Only users with role 'supporter'
-        WHERE m1.meta_key = '".$wpdb->prefix."capabilities' AND m1.meta_value LIKE \"%supporter%\"
+        WHERE m1.meta_key = '".$wpdb->prefix."capabilities' AND m1.meta_value LIKE \"%upporter%\"
 
         GROUP BY users.id
 
@@ -55,6 +55,8 @@
 
       WHERE (amount IS NULL || amount < 100); "
     );
+
+    $email_subject = 'Seamless Donations: List of supporters who have donated less than 100 DKK last year';
 
     if($wpdb->num_rows > 0){
       $table = '<table cellpadding="5" border="1"><tr><th>Name</th><th>Email</th><th>Amount donated last year</th></tr>';
@@ -68,7 +70,6 @@
       $table .= '</table>';
 
       $email_content = "<h4>This is the list of supporters who should be downgraded to subscribers because they have donated less than 100DKK during the last year</h4><br/><br/> $table";
-      $email_subject = 'Seamless Donations: List of supporters who have donated less than 100 DKK last year';
       $headers[] = 'Content-type: text/html';
 
       // Send an email to the administrator with the results
@@ -76,6 +77,7 @@
 
     } else {
       // Nothing to do. No supporters have been found who have donated less than 100 DKK last year
+      wp_mail( get_option('dgx_donate_notify_emails'), $email_subject, "No supporters have been found who have donated less than 100 DKK last year" );
     }
 
   }
