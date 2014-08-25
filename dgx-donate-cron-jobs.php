@@ -22,6 +22,7 @@
   function minimum_donations_notification() {
     global $wpdb;
 
+    $wpdb->get_results("SET SQL_BIG_SELECTS=1;");
     $supporters_to_be_downgraded = $wpdb->get_results(
       "
       SELECT display_name, email, amount FROM (
