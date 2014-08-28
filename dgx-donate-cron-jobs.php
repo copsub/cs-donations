@@ -46,9 +46,14 @@
         LEFT JOIN ".$wpdb->prefix."postmeta m3 ON posts.id = m3.post_id AND m3.meta_key = '_dgx_donate_amount'
         # And the currency
         LEFT JOIN ".$wpdb->prefix."postmeta m4 ON posts.id = m4.post_id AND m4.meta_key = '_dgx_donate_donation_currency'
+        # Join the usermeta again to check the donation method
+        LEFT JOIN sbc1_usermeta m5 ON users.ID = m5.user_id AND m5.meta_key = 'donation_method'
 
         # Only users with role 'supporter'
         WHERE m1.meta_key = '".$wpdb->prefix."capabilities' AND m1.meta_value LIKE \"%upporter%\"
+
+        # And exclude users who pay through the bank
+        AND (m5.meta_value IS NULL || m5.meta_value != 'Bank')
 
         GROUP BY users.id
 
