@@ -307,7 +307,10 @@ class Dgx_Donate_IPN_Handler {
 			}
 
     	//-----------------------------------------------------------------//
-
+			# As the user is paying through Paypal, save the donation method
+			if (isset( $user_id )){
+				update_user_meta( $user_id, 'donation_method', 'Paypal' );
+			}
 
 			// @todo - send different notification for recurring?
 

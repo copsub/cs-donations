@@ -25,13 +25,14 @@
     $wpdb->get_results("SET SQL_BIG_SELECTS=1;");
     $supporters_to_be_downgraded = $wpdb->get_results(
       "
-      SELECT display_name, email, amount FROM (
+      SELECT display_name, email, amount, donation_method FROM (
 
         SELECT
           users.display_name,
           users.user_email AS email,
           # This is a small hack to convert USD to DKK (approximately)
-          IFNULL(SUM(IF(m4.meta_value = 'USD', m3.meta_value*5.5, m3.meta_value)), 0) AS amount
+          IFNULL(SUM(IF(m4.meta_value = 'USD', m3.meta_value*5.5, m3.meta_value)), 0) AS amount,
+          m5.meta_value AS donation_method
 
         # We start with all users
         FROM ".$wpdb->prefix."users users
@@ -65,12 +66,13 @@
     $email_subject = 'Seamless Donations: List of supporters who have donated less than 100 DKK last year';
 
     if($wpdb->num_rows > 0){
-      $table = '<table cellpadding="5" border="1"><tr><th>Name</th><th>Email</th><th>Amount donated last year</th></tr>';
+      $table = '<table cellpadding="5" border="1"><tr><th>Name</th><th>Email</th><th>Amount donated last year</th><th>Donation method</th></tr>';
       foreach($supporters_to_be_downgraded as $supporter){
         $table .= '<tr>';
         $table .= '<td>' . $supporter->display_name . '</td>';
         $table .= '<td>' . $supporter->email . '</td>';
         $table .= '<td>' . $supporter->amount . '</td>';
+        $table .= '<td>' . ($supporter->donation_method ? $supporter->donation_method : 'Undefined') . '</td>';
         $table .= '</tr>';
       }
       $table .= '</table>';
