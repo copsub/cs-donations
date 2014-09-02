@@ -23,6 +23,40 @@
     global $wpdb;
 
     $wpdb->get_results("SET SQL_BIG_SELECTS=1;");
+    $supporter_stats = $wpdb->get_results(
+      "
+      SELECT
+        COUNT(*) AS count,
+        m5.meta_value AS donation_method
+
+      # We start with all users
+      FROM ".$wpdb->prefix."users users
+
+      # We load the usermeta in order to check the role
+      LEFT JOIN ".$wpdb->prefix."usermeta m1 ON users.ID = m1.user_id
+
+      # Join the usermeta again to check the donation method
+      LEFT JOIN ".$wpdb->prefix."usermeta m5 ON users.ID = m5.user_id AND m5.meta_key = 'donation_method'
+
+      # Only users with role 'supporter'
+      WHERE m1.meta_key = '".$wpdb->prefix."capabilities' AND m1.meta_value LIKE \"%upporter%\"
+
+      GROUP BY m5.meta_value
+      "
+    );
+
+
+    $email_content = "<h4>Stats about the donation method assigned to supporters</h4><ul>";
+    $total = 0;
+    foreach($supporter_stats as $row){
+      $donation_method = $row->donation_method ? $row->donation_method : 'NULL';
+      $email_content .= "<li>".$donation_method.": ".$row->count."</li>";
+      $total += $row->count;
+    }
+    $email_content .= "<li>Total: $total</li></ul><br/><br/><br/>";
+
+
+    $wpdb->get_results("SET SQL_BIG_SELECTS=1;");
     $supporters_to_be_downgraded = $wpdb->get_results(
       "
       SELECT display_name, email, amount, donation_method FROM (
@@ -63,7 +97,6 @@
       WHERE (amount IS NULL || amount < 100); "
     );
 
-    $email_subject = 'Seamless Donations: List of supporters who have donated less than 100 DKK last year';
 
     if($wpdb->num_rows > 0){
       $table = '<table cellpadding="5" border="1"><tr><th>Name</th><th>Email</th><th>Amount donated last year</th><th>Donation method</th></tr>';
@@ -77,16 +110,18 @@
       }
       $table .= '</table>';
 
-      $email_content = "<h4>This is the list of supporters who should be downgraded to subscribers because they have donated less than 100DKK during the last year</h4><br/><br/> $table";
-      $headers[] = 'Content-type: text/html';
+      $supporters_to_be_downgraded_count = count($supporters_to_be_downgraded);
 
-      // Send an email to the administrator with the results
-      wp_mail( get_option('dgx_donate_notify_emails'), $email_subject, $email_content, $headers );
+      $email_content .= "<h4>This is the list of supporters who should be downgraded to subscribers because they have donated less than 100DKK during the last year ($supporters_to_be_downgraded_count)</h4><br/><br/> $table";
 
     } else {
-      // Nothing to do. No supporters have been found who have donated less than 100 DKK last year
-      wp_mail( get_option('dgx_donate_notify_emails'), $email_subject, "No supporters have been found who have donated less than 100 DKK last year" );
+      $email_content .= "<h4>No supporters have been found who have donated less than 100 DKK last year</h4>";
     }
+
+    // Send an email to the administrator with the results
+    $email_subject = 'Seamless Donations: List of supporters who have donated less than 100 DKK last year';
+    $headers[] = 'Content-type: text/html';
+    wp_mail( get_option('dgx_donate_notify_emails'), $email_subject, $email_content, $headers );
 
   }
 
