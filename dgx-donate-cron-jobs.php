@@ -49,7 +49,7 @@
     $email_content = "<h4>Stats about the donation method assigned to supporters</h4><ul>";
     $total = 0;
     foreach($supporter_stats as $row){
-      $donation_method = $row->donation_method ? $row->donation_method : 'NULL';
+      $donation_method = $row->donation_method ? $row->donation_method : 'Not in DB';
       $email_content .= "<li>".$donation_method.": ".$row->count."</li>";
       $total += $row->count;
     }
