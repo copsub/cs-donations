@@ -437,7 +437,7 @@ function dgx_donate_paypalstd_ajax_checkout()
 	
 	// Save it all in a transient
 	$transientToken = $postData['SESSIONID'];
-	set_transient($transientToken, $postData, 7*24*60*60); // 7 days
+	set_transient($transientToken, $postData, 14*24*60*60); // 14 days
 
 	// Log
 	dgx_donate_debug_log( '----------------------------------------' );
