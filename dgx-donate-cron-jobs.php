@@ -127,6 +127,41 @@
 
   // This function checks for users who have tried to subscribe in Paypal but have not completed the subscription
   function check_incomplete_subscriptions() {
-    error_log("Pending check_incomplete_subscriptions");
+    global $wpdb;
+    $incomplete_donations = $wpdb->get_results(
+      "
+      SELECT *
+      FROM ".$wpdb->prefix."options
+      WHERE `option_name` LIKE '_transient_dgxdonate%';"
+    );
+
+
+    if($wpdb->num_rows > 0){
+      $table = '<table cellpadding="5" border="1"><tr><th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Amount</th></tr>';
+      foreach($incomplete_donations as $transient){
+        $transient_name = substr( $transient->option_name, 11, strlen( $transient->option_name ) );
+        $donation = get_transient( $transient_name );
+        $table .= '<tr>';
+        $table .= "<td>" . $donation['FIRSTNAME'] . " " . $donation['LASTNAME'] . '</td>';
+        $table .= '<td>' . $donation['EMAIL'] . '</td>';
+        $table .= '<td>' . $donation['PHONE'] . '</td>';
+        $table .= '<td>' . $donation['ADDRESS'] . " " . $donation['ADDRESS2'] . " " . $donation['ZIP'] . " " . $donation['CITY'] . " " . $donation['COUNTRY'] . '</td>';
+        $table .= '<td>' . $donation['AMOUNT'] . '</td>';
+        $table .= '</tr>';
+      }
+      $table .= '</table>';
+
+      $incomplete_donations_count = count($incomplete_donations);
+
+      $email_content .= "<h4>This is the list of users who have tried to donate but have not completed the donation in Paypal ($incomplete_donations_count)</h4><br/> $table <br/><br/><p>It might be a good idea to contact these users to check if they had any problem while trying to donate.</p>";
+
+    } else {
+      $email_content .= "<h4>No users have been found who have tried to donate but have not completed the donation</h4>";
+    }
+
+    // Send an email to the administrator with the results
+    $email_subject = 'Seamless Donations: List of users who have tried to donate but have not completed the donation in Paypal';
+    $headers[] = 'Content-type: text/html';
+    wp_mail( get_option('dgx_donate_notify_emails'), $email_subject, $email_content, $headers );
   }
 ?>
