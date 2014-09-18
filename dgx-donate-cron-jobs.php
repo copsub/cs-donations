@@ -137,17 +137,25 @@
 
 
     if($wpdb->num_rows > 0){
-      $table = '<table cellpadding="5" border="1"><tr><th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Amount</th></tr>';
+      $table = '<table cellpadding="5" border="1"><tr><th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Amount</th><th>Date</th></tr>';
       foreach($incomplete_donations as $transient){
         $transient_name = substr( $transient->option_name, 11, strlen( $transient->option_name ) );
         $donation = get_transient( $transient_name );
-        $table .= '<tr>';
-        $table .= "<td>" . $donation['FIRSTNAME'] . " " . $donation['LASTNAME'] . '</td>';
-        $table .= '<td>' . $donation['EMAIL'] . '</td>';
-        $table .= '<td>' . $donation['PHONE'] . '</td>';
-        $table .= '<td>' . $donation['ADDRESS'] . " " . $donation['ADDRESS2'] . " " . $donation['ZIP'] . " " . $donation['CITY'] . " " . $donation['COUNTRY'] . '</td>';
-        $table .= '<td>' . $donation['AMOUNT'] . '</td>';
-        $table .= '</tr>';
+        if($donation != false){ # If get_transient returns false, it's because the transient has timed out
+          $transient_timestamp = get_option ( '_transient_timeout_' . $transient_name );
+          # I remove 14 days from the timestamp, to get the date when the user tried to make the payment
+          $original_timestamp = strtotime('-14 day', $transient_timestamp);
+          $human_date = date('d-m-Y H:i:s',$original_timestamp);
+
+          $table .= '<tr>';
+          $table .= "<td>" . $donation['FIRSTNAME'] . " " . $donation['LASTNAME'] . '</td>';
+          $table .= '<td>' . $donation['EMAIL'] . '</td>';
+          $table .= '<td>' . $donation['PHONE'] . '</td>';
+          $table .= '<td>' . $donation['ADDRESS'] . " " . $donation['ADDRESS2'] . " " . $donation['ZIP'] . " " . $donation['CITY'] . " " . $donation['COUNTRY'] . '</td>';
+          $table .= '<td>' . $donation['AMOUNT'] . '</td>';
+          $table .= '<td>' . $human_date . '</td>';
+          $table .= '</tr>';
+        }
       }
       $table .= '</table>';
 
