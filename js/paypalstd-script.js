@@ -352,8 +352,22 @@ function DgxDonateDoCheckout()
 }
 
 function DgxDonateCallback( data ) {
-	// Submit the hidden form to take the user to PayPal
-	jQuery( '#dgx-donate-hidden-form' ).submit();
+	if(data == '0|SUCCESS_BANK'){
+		// For users paying through bank account, show a Thank You message
+		thank_you_message = "	\
+			<br/><br/><br/> \
+			<i class='upme-icon upme-icon-check upme-icon-5x' style='float:left; padding-right: 10px;'></i> \
+			<h2>Thank you for your donation</h2>\
+			<h3>We have sent you an email with our bank account number and the concept you should write in the transfer.</h3>\
+			<h3>If you have any doubt, please get in touch with us.</h3>\
+			<br/><br/><br/>\
+		";
+		jQuery('#dgx-donate-container').html(thank_you_message);
+		jQuery("#dgx-donate-container").get(0).scrollIntoView();
+	} else {
+		// Submit the hidden form to take the user to PayPal
+	  jQuery( '#dgx-donate-hidden-form' ).submit();
+	}
 }
 
 function DgxDonateMarkInvalid(fieldname)

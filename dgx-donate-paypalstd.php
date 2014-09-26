@@ -308,12 +308,46 @@ function dgx_donate_paypalstd_detail()
 function dgx_donate_paypalstd_ajax_checkout()
 {
 	$nonce = $_POST['nonce'];
-	
+
 	if (!wp_verify_nonce($nonce, 'dgx-donate-nonce'))
 	{
 		die('Busted!');
 	}
-	
+
+	$postData = generate_post_data();
+
+	// Save it all in a transient
+	$transientToken = $postData['SESSIONID'];
+	set_transient($transientToken, $postData, 14*24*60*60); // 14 days
+
+	// Log
+	dgx_donate_debug_log( '----------------------------------------' );
+	dgx_donate_debug_log( 'Donation transaction started' );
+	dgx_donate_debug_log( 'Name: ' . $postData['FIRSTNAME'] . ' ' . $postData['LASTNAME'] );
+	dgx_donate_debug_log( 'Amount: ' . $postData['AMOUNT'] );
+	dgx_donate_debug_log( 'IPN: ' . plugins_url( '/dgx-donate-paypalstd-ipn.php', __FILE__ ) );
+
+	// Return success to AJAX caller as " code | message "
+	// A return code of 0 indicates success, and the returnMessage is ignored
+	// A return code of 1 indicates failure, and the returnMessage contains the error message
+	// CS Modification: send a custom returnMessage for users paying through bank_transfer
+	if($_POST['paymentMethod'] == 'bank'){
+		bank_transfer_actions($postData);
+		$returnMessage = "0|SUCCESS_BANK";
+	}else{
+		$returnMessage = "0|SUCCESS";
+	}
+
+	echo $returnMessage;
+
+	die(); // this is required to return a proper result
+}
+
+add_action('wp_ajax_dgx_donate_paypalstd_ajax_checkout', 'dgx_donate_paypalstd_ajax_checkout');
+add_action('wp_ajax_nopriv_dgx_donate_paypalstd_ajax_checkout', 'dgx_donate_paypalstd_ajax_checkout');
+
+
+function generate_post_data(){
 	$referringUrl = $_POST['referringUrl'];
 	$sessionID = $_POST['sessionID'];
 	$donationAmount = $_POST['donationAmount'];
@@ -434,27 +468,64 @@ function dgx_donate_paypalstd_ajax_checkout()
 		$temp = strip_tags($temp);
 		$postData[$key] = $temp;
 	}
-	
-	// Save it all in a transient
-	$transientToken = $postData['SESSIONID'];
-	set_transient($transientToken, $postData, 14*24*60*60); // 14 days
-
-	// Log
-	dgx_donate_debug_log( '----------------------------------------' );
-	dgx_donate_debug_log( 'Donation transaction started' );
-	dgx_donate_debug_log( 'Name: ' . $postData['FIRSTNAME'] . ' ' . $postData['LASTNAME'] );
-	dgx_donate_debug_log( 'Amount: ' . $postData['AMOUNT'] );
-	dgx_donate_debug_log( 'IPN: ' . plugins_url( '/dgx-donate-paypalstd-ipn.php', __FILE__ ) );
-	
-	// Return success to AJAX caller as " code | message "
-	// A return code of 0 indicates success, and the returnMessage is ignored
-	// A return code of 1 indicates failure, and the returnMessage contains the error message
-	$returnMessage = "0|SUCCESS";
-
-	echo $returnMessage;
-
-	die(); // this is required to return a proper result
+	return $postData;
 }
 
-add_action('wp_ajax_dgx_donate_paypalstd_ajax_checkout', 'dgx_donate_paypalstd_ajax_checkout');
-add_action('wp_ajax_nopriv_dgx_donate_paypalstd_ajax_checkout', 'dgx_donate_paypalstd_ajax_checkout');
+
+
+
+function bank_transfer_actions($postData){
+	$user = find_or_create_user($postData);
+
+  // Save the donation into the Seamless Donations table
+	$donation_id = dgx_donate_create_donation_from_transient_data( $postData );
+	delete_transient( $postData['SESSIONID'] );
+
+  // Send a welcome email
+	$email_subject = 'Bank Transfer instructions for Copenhagen Suborbitals Donation';
+	$email_content = "<p>Hello $user->display_name, please donate to the bank account ???????? with the concept <strong>csdonater$user->id</strong></p>";
+	$headers[] = 'Content-type: text/html';
+  wp_mail( $postData['EMAIL'], $email_subject, $email_content, $headers );
+}
+
+
+
+
+function find_or_create_user($postData){
+	$user = get_user_by( 'email', $postData['EMAIL'] );
+
+	if ( $user === false ) {
+		// Prepare user data
+		$member_info = array();
+		$member_info['user_login'] = $postData['EMAIL'];
+		$member_info['user_pass'] = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+		$member_info['user_email'] = $postData['EMAIL'];
+		$member_info['first_name'] = $postData['FIRSTNAME'];
+		$member_info['last_name'] = $postData['LASTNAME'];
+		$member_info['user_nicename'] = $member_info['first_name'] . ' ' . $member_info['last_name'];
+		$member_info['display_name'] = $member_info['first_name'] . ' ' . $member_info['last_name'];
+		$member_info['nickname'] = $member_info['first_name'] . ' ' . $member_info['last_name'];
+		$member_info['role'] = 'supporter';
+		$member_info['address'] = $postData['ADDRESS'] .', '. $postData['ADDRESS2'];
+		if ($postData['ADDTOMAILINGLIST'] == 'on') {
+			$member_info['mailinglist'] = 'Yes';
+		}
+		$countries = dgx_donate_get_countries(); // Used to convert countrycodes
+		$member_info['country'] = $countries[$postData['COUNTRY']];
+
+		// Create user in DB
+		$user_id = wp_insert_user( $member_info );
+
+		// Save some additional fields along with the user
+		update_user_meta( $user_id, 'user_phone', $postData['PHONE'] );
+		update_user_meta( $user_id, 'user_adress', $member_info['address'] );
+		update_user_meta( $user_id, 'user_zip', $postData['ZIP'] );
+		update_user_meta( $user_id, 'country', $member_info['country'] );
+		update_user_meta( $user_id, 'city', $postData['CITY'] );
+		update_user_meta( $user_id, 'mailinglist', $member_info['mailinglist'] );
+
+		$user = get_user_by( 'email', $postData['EMAIL'] );
+	}
+
+	return $user;
+}

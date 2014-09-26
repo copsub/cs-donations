@@ -482,21 +482,21 @@ function dgx_donate_get_donation_section($formContent)  //RA EDIT
 	$output .= '<p class="dgx-type-onetime-section" style="display: none;">' . esc_html__( 'I would like to make a one time donation in the amount of:', 'dgx-donate' ) . '</p>';
 
 	$output .= '<p class="dgx-type-onetime-section" style="display: none;">';
-	$output .= '<input type="radio" name="_dgx_donate_amount" value="20">$20 ';
-	$output .= '<input type="radio" name="_dgx_donate_amount" value="50" id="dgx-type-onetime-checked" class="horiz">$50 ';
-	$output .= '<input type="radio" name="_dgx_donate_amount" value="100" class="horiz">$100 ';
+	$output .= '<input type="radio" name="_dgx_donate_amount" value="20" id="_dgx_donate_amount_20"><label class="label-small" for="_dgx_donate_amount_20">$20</label> ';
+	$output .= '<input type="radio" name="_dgx_donate_amount" value="50" id="dgx-type-onetime-checked" class="horiz"><label class="label-small"  for="dgx-type-onetime-checked">$50</label> ';
+	$output .= '<input type="radio" name="_dgx_donate_amount" value="100" id="_dgx_donate_amount_100" class="horiz"><label class="label-small"  for="_dgx_donate_amount_100">$100</label> ';
 	$output .= '</p>';
 	
 	$output .= '<p class="clr dgx-type-membership-section">';
-	$output .= '<input type="radio" name="_dgx_donate_amount" value="10">$10 ';
-	$output .= '<input type="radio" name="_dgx_donate_amount" value="20" id="dgx-type-membership-checked" class="horiz" checked="checked">$20 ';
-	$output .= '<input type="radio" name="_dgx_donate_amount" value="50" class="horiz">$50 ';
+	$output .= '<input type="radio" name="_dgx_donate_amount" value="10" id="_dgx_donate_amount_10"><label class="label-small" for="_dgx_donate_amount_10">$10</label> ';
+	$output .= '<input type="radio" name="_dgx_donate_amount" value="20" id="dgx-type-membership-checked" class="horiz" checked="checked"><label class="label-small" for="dgx-type-membership-checked">$20</label> ';
+	$output .= '<input type="radio" name="_dgx_donate_amount" value="50" class="horiz" id="_dgx_donate_amount_50"><label class="label-small" for="_dgx_donate_amount_50">$50</label> ';
 	$output .= '</p>';
 
 
 
 	$output .= "<p><input type='radio' name='_dgx_donate_amount' value='OTHER' id='dgx-donate-other-radio' />";
-	$output .= esc_html__( 'Other: ', 'dgx-donate' );
+	$output .= '<label class=\"label-small\" for=\"dgx-donate-other-radio\">Other</label>';
 	$output .= "<input type=\"text\" class=\"aftertext\" id=\"dgx-donate-other-input\" name=\"_dgx_donate_user_amount\" />";
 	$output .= "</p>\n";
 	
@@ -725,6 +725,14 @@ function dgx_donate_get_donor_section( $form_content ) { //RA EDIT
 	$output .= esc_html__( 'Please do not publish my name.  I would like to remain anonymous.', 'dgx-donate' );
 	$output .= "</p>\n";
 	
+	$output .= "</div>\n";
+
+	$output .= "<div class='dgx-donate-form-section' id='dgx-donate-form-payment-method-section'>";
+	$output .= "<h2>Payment Method</h2>";
+	$output .= '<p class="clr dgx-type-membership-section">';
+	$output .= '<input type="radio" name="_dgx_donate_payment_method" id="radio-paypal" value="paypal" checked="checked"><label for="radio-paypal">Paypal</label> ';
+	$output .= '<input type="radio" name="_dgx_donate_payment_method" id="radio-bank" value="bank" class="horiz" ><label for="radio-bank">Bank Transfer</label>';
+	$output .= '</p>';
 	$output .= "</div>\n";
 	
 	$form_content .= $output;
