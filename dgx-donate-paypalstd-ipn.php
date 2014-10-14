@@ -3,7 +3,7 @@
   * Seamless Donations (Dgx-Donate) IPN Handler class
   * Copyright 2013 Allen Snook (email: allendav@allendav.com)
   * GPL2
-  */ 
+  */
 
 // Load WordPress   Edit RA
 include "../../../../wp-config.php";
@@ -19,9 +19,9 @@ class Dgx_Donate_IPN_Handler {
 	var $session_id     = '';
 	var $transaction_id = '';
 
-	public function __construct() {	
+	public function __construct() {
 		$debug_log = get_option( 'dgx_donate_log' ); //ra edit
-		$debug_log = '';		
+		$debug_log = '';
 		update_option( 'dgx_donate_log', $debug_log );
 
 		dgx_donate_debug_log( '----------------------------------------' );
@@ -59,22 +59,22 @@ class Dgx_Donate_IPN_Handler {
 		// }
 
 		dgx_donate_debug_log( 'IPN processing complete' );
-		
+
 		$debug_log = get_option( 'dgx_donate_log' );
 		$body = '';
 		foreach ($debug_log as $debug_log_line)
 		{
 			$body .= $debug_log_line . "\n";
 		}
-		
+
 		$headers = '';
-		
-		
+
+
 		$mail_sent = wp_mail( 'someone@m.evernote.com', 'Seamless donation event @CopSub_Log', $body, $headers );
 
 
-		
-		dgx_donate_debug_log('EN Mail Status: ' . $mail_sent);				
+
+		dgx_donate_debug_log('EN Mail Status: ' . $mail_sent);
 
 	}
 
@@ -149,7 +149,7 @@ class Dgx_Donate_IPN_Handler {
 		//dgx_donate_debug_log( print_r( $this->post_data, true ) ); // @todo don't commit
 
 		if ( "Completed" == $payment_status ) {
-			// Check if we've already logged a transaction with this same transaction id 
+			// Check if we've already logged a transaction with this same transaction id
 			$donation_id = get_donations_by_meta( '_dgx_donate_transaction_id', $this->transaction_id, 1 );
 
 			if ( 0 == count( $donation_id ) ) {
@@ -163,7 +163,7 @@ class Dgx_Donate_IPN_Handler {
 
 					// Retrieve the data from transient
 					$donation_form_data = get_transient( $this->session_id );
-	
+
 					if ( ! empty( $donation_form_data ) ) {
 						// Create a donation record
 						$donation_id = dgx_donate_create_donation_from_transient_data( $donation_form_data );
@@ -185,7 +185,7 @@ class Dgx_Donate_IPN_Handler {
 
 					// But first, flatten the array returned by get_donations_by_meta for _dgx_donate_session_id
 					$donation_id = $donation_id[0];
-					
+
 					$old_donation_id = $donation_id;
 					$donation_id = dgx_donate_create_donation_from_donation( $old_donation_id );
 					dgx_donate_debug_log( "Created donation {$donation_id} (recurring donation, donor data copied from donation {$old_donation_id}" );
@@ -225,11 +225,11 @@ class Dgx_Donate_IPN_Handler {
 				$member_info = array();
 				foreach($donation as $key => $val){
 					if(strpos($key,'_dgx_donate_donor_') === 0){
-						$member_info[strtr($key,array('_dgx_donate_donor_' => ''))] = 	$donation[$key][0];					
-					}					
+						$member_info[strtr($key,array('_dgx_donate_donor_' => ''))] = 	$donation[$key][0];
+					}
 					if(strpos($key,'_dgx_donate_add_to_mailing_list') === 0){
-						$member_info[strtr($key,array('_dgx_donate_add_to_mailing_list' => 'mailing_list'))] = 	$donation[$key][0];					
-					}					
+						$member_info[strtr($key,array('_dgx_donate_add_to_mailing_list' => 'mailing_list'))] = 	$donation[$key][0];
+					}
 				}
 
 				/* Setup new user profile */
@@ -249,15 +249,15 @@ class Dgx_Donate_IPN_Handler {
 
 				/* Does the user already exist in the db (email) */
 				$existingUser = get_user_by( 'email', $member_info['email'] );
-				
-				if ( $existingUser === false ) {					
-			
+
+				if ( $existingUser === false ) {
+
 					/* If user doesn't exist, create new user */
 					$countries = dgx_donate_get_countries(); // Used to convert countrycodes
 					$member_info['country'] = $countries[$member_info['country']];
-				
+
 					$user_id = wp_insert_user( $member_info );
-                      
+
 					// added by KB: additional fields to member
 					update_user_meta( $user_id, 'user_phone',   $member_info['phone'] );
 					update_user_meta( $user_id, 'user_adress',  $member_info['address'] );
@@ -275,15 +275,15 @@ class Dgx_Donate_IPN_Handler {
 
 					/* If User exist update to supporter if only subscriber now */
 					dgx_donate_debug_log('Existing user found: ' . print_r($existingUser, true));
-					
-					$user_id = $existingUser -> ID;						
+
+					$user_id = $existingUser -> ID;
 					$user_role = $existingUser->roles[0];
-					
+
 					if ( $user_role == 'subscriber') {
 						$user_result = wp_update_user( array( 'ID' => $user_id, 'role' => 'supporter' ) );
-					
+
 						$updated_user = get_user_by( 'id' , $user_id );
-					
+
 						if ( is_wp_error( $user_result ) ) {
 							dgx_donate_debug_log('User update error: ' . print_r($user_result, true));
 						} else {
