@@ -20,16 +20,16 @@ class Dgx_Donate_IPN_Handler {
 	var $transaction_id = '';
 
 	public function __construct() {
-		$debug_log = get_option( 'dgx_donate_log' ); //ra edit
+		$debug_log = get_option( 'dgx_donate_log' ); // Clean up old debug log before starting
 		$debug_log = '';
 		update_option( 'dgx_donate_log', $debug_log );
-
 		dgx_donate_debug_log( '----------------------------------------' );
 		dgx_donate_debug_log( 'IPN processing start' );
 		dgx_donate_debug_log( '----------------------------------------' );
 		dgx_donate_debug_log( '- RAW IPN INFO -------------------------' );
  		dgx_donate_debug_log( print_r($_POST,true) );
 		dgx_donate_debug_log( '----------------------------------------' );
+
 		// Grab all the post data
 		$this->post_data = $_POST;
 
@@ -39,43 +39,24 @@ class Dgx_Donate_IPN_Handler {
 		// Extract the session and transaction IDs from the POST
 		$this->get_ids_from_post();
 
-		// CS modification: We want to store the donation information
-		// from donations that were setup in the old website
-		// This donations come without session_id in the custom dgxdonate parameters
-		// But this is all fine as long as the payment is VERIFIED by Paypal
-		// So we comment the following line:
-		// if ( ! empty( $this->session_id ) ) {
-			$response = $this->reply_to_paypal();
-
-			if ( "VERIFIED" == $response ) {
-				$this->handle_verified_ipn();
-			} else if ( "INVALID" == $response ) {
-				$this->handle_invalid_ipn();
-			} else {
-				$this->handle_unrecognized_ipn( $response );
-			}
-		// } else {
-		// 	dgx_donate_debug_log( 'Null IPN (Empty session id).  Nothing to do.' );
-		// }
-
-		dgx_donate_debug_log( 'IPN processing complete' );
-
-		$debug_log = get_option( 'dgx_donate_log' );
-		$body = '';
-		foreach ($debug_log as $debug_log_line)
-		{
-			$body .= $debug_log_line . "\n";
+		// Reply to Paypal to be sure that this IPN is valid
+		$response = $this->reply_to_paypal();
+		if ( "VERIFIED" == $response ) {
+			$this->handle_verified_ipn();
+		} else if ( "INVALID" == $response ) {
+			$this->handle_invalid_ipn();
+		} else {
+			$this->handle_unrecognized_ipn( $response );
 		}
 
-		$headers = '';
-
-
-		$mail_sent = wp_mail( 'someone@m.evernote.com', 'Seamless donation event @CopSub_Log', $body, $headers );
-
-
-
-		dgx_donate_debug_log('EN Mail Status: ' . $mail_sent);
-
+		dgx_donate_debug_log( 'IPN processing complete' );
+		$debug_log = get_option( 'dgx_donate_log' );
+		$body = '';
+		foreach ($debug_log as $debug_log_line) {
+			$body .= $debug_log_line . "\n";
+		}
+		$mail_sent = wp_mail( 'someone@m.evernote.com', 'Seamless donation event @CopSub_Log', $body, '' );
+		dgx_donate_debug_log('Evernote Mail Status: ' . $mail_sent);
 	}
 
 	function configure_for_production_or_test() {
@@ -146,7 +127,6 @@ class Dgx_Donate_IPN_Handler {
 
 		dgx_donate_debug_log( "IPN VERIFIED for session ID {$this->session_id}" );
 		dgx_donate_debug_log( "Payment status = {$payment_status}" );
-		//dgx_donate_debug_log( print_r( $this->post_data, true ) ); // @todo don't commit
 
 		if ( "Completed" == $payment_status ) {
 			// Check if we've already logged a transaction with this same transaction id
