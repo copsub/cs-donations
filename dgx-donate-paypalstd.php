@@ -476,6 +476,7 @@ function generate_post_data(){
 
 function bank_transfer_actions($postData){
 	$user = find_or_create_user($postData);
+  $userdata = get_userdata( $user->ID );
 
   // Save the donation into the Seamless Donations table
 	$donation_id = dgx_donate_create_donation_from_transient_data( $postData );
@@ -483,8 +484,20 @@ function bank_transfer_actions($postData){
 
   // Send a welcome email
 	$email_subject = 'Bank Transfer instructions for Copenhagen Suborbitals Donation';
-	$email_content = "<p>Hello $user->display_name, please donate to the bank account ???????? with the concept <strong>csdonater$user->id</strong></p>";
+
+	$email_content = file_get_contents(ABSPATH.'/wp_blog/wp_content/plugins/seamless-donations-modified/template_bank_donation_email.html');
+	$email_content = str_replace("%firstname%", $userdata->first_name, $email_content);
+	$email_content = str_replace("%lastname%", $userdata->last_name, $email_content);
+	$email_content = str_replace("%username%", $user->user_login, $email_content);
+	$email_content = str_replace("%email%", $user->user_email, $email_content);
+	$email_content = str_replace("%paymentid%", $user->ID, $email_content);
+	$email_content = str_replace("%postalcode%", $userdata->user_zip, $email_content);
+	$email_content = str_replace("%address%", $userdata->user_adress, $email_content);
+	$email_content = str_replace("%city%", $userdata->city, $email_content);
+	$email_content = str_replace("%country%", $userdata->country, $email_content);
+
 	$headers[] = 'Content-type: text/html';
+
   wp_mail( $postData['EMAIL'], $email_subject, $email_content, $headers );
 }
 
