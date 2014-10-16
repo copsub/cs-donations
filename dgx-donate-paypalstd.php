@@ -490,7 +490,7 @@ function bank_transfer_actions($postData){
 	$email_content = str_replace("%lastname%", $userdata->last_name, $email_content);
 	$email_content = str_replace("%username%", $user->user_login, $email_content);
 	$email_content = str_replace("%email%", $user->user_email, $email_content);
-	$email_content = str_replace("%paymentid%", $user->ID, $email_content);
+	$email_content = str_replace("%paymentid%", "SUPPORT".$user->ID, $email_content);
 	$email_content = str_replace("%postalcode%", $userdata->user_zip, $email_content);
 	$email_content = str_replace("%address%", $userdata->user_adress, $email_content);
 	$email_content = str_replace("%city%", $userdata->city, $email_content);
