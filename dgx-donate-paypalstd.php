@@ -485,7 +485,7 @@ function bank_transfer_actions($postData){
   // Send a welcome email
 	$email_subject = 'Bank Transfer instructions for Copenhagen Suborbitals Donation';
 
-	$email_content = file_get_contents(ABSPATH.'/wp_blog/wp_content/plugins/seamless-donations-modified/template_bank_donation_email.html');
+	$email_content = file_get_contents(plugin_dir_path(__FILE__).'template_bank_donation_email.html');
 	$email_content = str_replace("%firstname%", $userdata->first_name, $email_content);
 	$email_content = str_replace("%lastname%", $userdata->last_name, $email_content);
 	$email_content = str_replace("%username%", $user->user_login, $email_content);
