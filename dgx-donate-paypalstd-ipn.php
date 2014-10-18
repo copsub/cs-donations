@@ -212,26 +212,49 @@ class Dgx_Donate_IPN_Handler {
   }
 
   function copsub_handle_verified_ipn($donation_id){
-    //COPENHAGEN SUBORBITALS CUSTOM CODE
-
-    $member_info = array();  //EDIT RA
-
     // Load donation data into $donation variable
     $donation = get_post_custom($donation_id);
     dgx_donate_debug_log('Donation: ' . print_r($donation,true));
 
-    // Handle recurring donations created in the new website
+    // Create or update the user in the database
+    $user_id = $this->copsub_create_user_if_necessary($donation);
+
     if(!empty($donation['_dgx_donate_repeating'][0])){
-      //create member info
-      $member_info = array();
-      foreach($donation as $key => $val){
-        if(strpos($key,'_dgx_donate_donor_') === 0){
-          $member_info[strtr($key,array('_dgx_donate_donor_' => ''))] =   $donation[$key][0];
-        }
-        if(strpos($key,'_dgx_donate_add_to_mailing_list') === 0){
-          $member_info[strtr($key,array('_dgx_donate_add_to_mailing_list' => 'mailing_list'))] =   $donation[$key][0];
-        }
+      // Handle recurring donations created in the new website
+      // --- We don't currently have any special actions for these donations ---
+
+    } else if (isset( $_POST[ "subscr_id" ] )){
+      // Handle recurring donations coming from the old website. Save the subscr id as a unique identifier
+      $this->copsub_handle_recurring_donation_old_website($donation_id);
+
+    } else {
+      // Handle one time donations
+      dgx_donate_debug_log('One-time donation. User not created or updated ');
+    }
+
+    # As the user is paying through Paypal, save the donation method
+    if (isset( $user_id )){
+      update_user_meta( $user_id, 'donation_method', 'Paypal' );
+    }
+
+    $this->copsub_send_email_notifications($donation_id);
+  }
+
+  function copsub_create_member_if_necessary($donation){
+    //create member info
+    $member_info = array();
+    foreach($donation as $key => $val){
+      if(strpos($key,'_dgx_donate_donor_') === 0){
+        $member_info[strtr($key,array('_dgx_donate_donor_' => ''))] =   $donation[$key][0];
       }
+      if(strpos($key,'_dgx_donate_add_to_mailing_list') === 0){
+        $member_info[strtr($key,array('_dgx_donate_add_to_mailing_list' => 'mailing_list'))] =   $donation[$key][0];
+      }
+    }
+    /* Does the user already exist in the db (email) */
+    $existingUser = get_user_by( 'email', $member_info['email'] );
+
+    if ( $existingUser === false ) {
 
       /* Setup new user profile */
       $member_info['user_login'] = $member_info['email'];
@@ -248,76 +271,58 @@ class Dgx_Donate_IPN_Handler {
 
       dgx_donate_debug_log('Member info: ' . print_r($member_info,true));
 
-      /* Does the user already exist in the db (email) */
-      $existingUser = get_user_by( 'email', $member_info['email'] );
+      /* If user doesn't exist, create new user */
+      $countries = dgx_donate_get_countries(); // Used to convert countrycodes
+      $member_info['country'] = $countries[$member_info['country']];
 
-      if ( $existingUser === false ) {
+      $user_id = wp_insert_user( $member_info );
 
-        /* If user doesn't exist, create new user */
-        $countries = dgx_donate_get_countries(); // Used to convert countrycodes
-        $member_info['country'] = $countries[$member_info['country']];
+      // added by KB: additional fields to member
+      update_user_meta( $user_id, 'user_phone',   $member_info['phone'] );
+      update_user_meta( $user_id, 'user_adress',  $member_info['address'] );
+      update_user_meta( $user_id, 'user_zip',     $member_info['zip'] );
+      update_user_meta( $user_id, 'country', $member_info['country'] );
+      update_user_meta( $user_id, 'city', $member_info['city'] );
+      update_user_meta( $user_id, 'mailinglist', $member_info['mailinglist'] );
 
-        $user_id = wp_insert_user( $member_info );
+      $new_user = get_user_by( 'email', $member_info['email'] );
+      dgx_donate_debug_log('New user created: ' . print_r($new_user, true));
+      return $user_id;
 
-        // added by KB: additional fields to member
-        update_user_meta( $user_id, 'user_phone',   $member_info['phone'] );
-        update_user_meta( $user_id, 'user_adress',  $member_info['address'] );
-        update_user_meta( $user_id, 'user_zip',     $member_info['zip'] );
-        update_user_meta( $user_id, 'country', $member_info['country'] );
-        update_user_meta( $user_id, 'city', $member_info['city'] );
-        update_user_meta( $user_id, 'mailinglist', $member_info['mailinglist'] );
+    }else{
+      /* If User exist update to supporter if only subscriber now */
+      dgx_donate_debug_log('Existing user found: ' . print_r($existingUser, true));
 
-        $new_user = get_user_by( 'email', $member_info['email'] );
-        dgx_donate_debug_log('New user created: ' . print_r($new_user, true));
+      $user_id = $existingUser -> ID;
+      $user_role = $existingUser->roles[0];
 
+      if ( $user_role == 'subscriber') {
+        $user_result = wp_update_user( array( 'ID' => $user_id, 'role' => 'supporter' ) );
 
+        $updated_user = get_user_by( 'id' , $user_id );
 
-      } else {
-
-        /* If User exist update to supporter if only subscriber now */
-        dgx_donate_debug_log('Existing user found: ' . print_r($existingUser, true));
-
-        $user_id = $existingUser -> ID;
-        $user_role = $existingUser->roles[0];
-
-        if ( $user_role == 'subscriber') {
-          $user_result = wp_update_user( array( 'ID' => $user_id, 'role' => 'supporter' ) );
-
-          $updated_user = get_user_by( 'id' , $user_id );
-
-          if ( is_wp_error( $user_result ) ) {
-            dgx_donate_debug_log('User update error: ' . print_r($user_result, true));
-          } else {
-            dgx_donate_debug_log('User updated to supporter: ' . print_r($updated_user, true));
-          }
+        if ( is_wp_error( $user_result ) ) {
+          dgx_donate_debug_log('User update error: ' . print_r($user_result, true));
         } else {
-          dgx_donate_debug_log('User not updated. Current role is: ' . $user_role);
+          dgx_donate_debug_log('User updated to supporter: ' . print_r($updated_user, true));
         }
+      } else {
+        dgx_donate_debug_log('User not updated. Current role is: ' . $user_role);
       }
-    // Handle recurring donations coming from the old website
-    } else if (isset( $_POST[ "subscr_id" ] )){
-
-      dgx_donate_debug_log('This is a recurring donation coming from the old website. Saving the subscr id in the session_id field, as a unique identifier of the subscriber:');
-      dgx_donate_debug_log($_POST[ "subscr_id" ]);
-
-      update_post_meta( $donation_id, '_dgx_donate_repeating', 1 );
-      update_post_meta( $donation_id, '_dgx_donate_session_id', $_POST[ "subscr_id" ] );
-
-    } else {
-      dgx_donate_debug_log('One-time donation. User not created or updated ');
+      return $existingUser->ID;
     }
-
-    //-----------------------------------------------------------------//
-    # As the user is paying through Paypal, save the donation method
-    if (isset( $user_id )){
-      update_user_meta( $user_id, 'donation_method', 'Paypal' );
-    }
-
-    $this->copsub_send_notifications($donation_id);
   }
 
-  function copsub_send_notifications($donation_id){
-  	 // @todo - send different notification for recurring?
+  function copsub_handle_recurring_donation_old_website($donation_id){
+    dgx_donate_debug_log('This is a recurring donation coming from the old website. Saving the subscr id in the session_id field, as a unique identifier of the subscriber:');
+    dgx_donate_debug_log($_POST[ "subscr_id" ]);
+
+    update_post_meta( $donation_id, '_dgx_donate_repeating', 1 );
+    update_post_meta( $donation_id, '_dgx_donate_session_id', $_POST[ "subscr_id" ] );
+  }
+
+  function copsub_send_email_notifications($donation_id){
+  	// @todo - send different notification for recurring?
     dgx_donate_send_donation_notification( $donation_id );
     $donation_from_old_site = $one_time_donation = $first_time_recurring = false;
 
