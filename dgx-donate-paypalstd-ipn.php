@@ -27,7 +27,7 @@ class Dgx_Donate_IPN_Handler {
     dgx_donate_debug_log( 'IPN processing start' );
     dgx_donate_debug_log( '----------------------------------------' );
     dgx_donate_debug_log( '- RAW IPN INFO -------------------------' );
-     dgx_donate_debug_log( print_r($_POST,true) );
+    dgx_donate_debug_log( print_r($_POST,true) );
     dgx_donate_debug_log( '----------------------------------------' );
 
     // Grab all the post data
@@ -216,25 +216,18 @@ class Dgx_Donate_IPN_Handler {
     $donation = get_post_custom($donation_id);
     dgx_donate_debug_log('Donation: ' . print_r($donation,true));
 
-    // Create or update the user in the database
-    $user_id = $this->copsub_create_user_if_necessary($donation);
-
     if(!empty($donation['_dgx_donate_repeating'][0])){
       // Handle recurring donations created in the new website
-      // --- We don't currently have any special actions for these donations ---
+      $user_id = $this->copsub_create_user_if_necessary($donation);
 
     } else if (isset( $_POST[ "subscr_id" ] )){
-      // Handle recurring donations coming from the old website. Save the subscr id as a unique identifier
+      // Handle recurring donations coming from the old website
+      $user_id = $this->copsub_create_user_if_necessary($donation);
       $this->copsub_handle_recurring_donation_old_website($donation_id);
 
     } else {
       // Handle one time donations
       dgx_donate_debug_log('One-time donation. User not created or updated ');
-    }
-
-    # As the user is paying through Paypal, save the donation method
-    if (isset( $user_id )){
-      update_user_meta( $user_id, 'donation_method', 'Paypal' );
     }
 
     $this->copsub_send_email_notifications($donation_id);
@@ -251,7 +244,7 @@ class Dgx_Donate_IPN_Handler {
         $member_info[strtr($key,array('_dgx_donate_add_to_mailing_list' => 'mailing_list'))] =   $donation[$key][0];
       }
     }
-    /* Does the user already exist in the db (email) */
+    /* Does the user already exist in the db? (check using email) */
     $existingUser = get_user_by( 'email', $member_info['email'] );
 
     if ( $existingUser === false ) {
@@ -269,7 +262,7 @@ class Dgx_Donate_IPN_Handler {
         $member_info['mailinglist'] = 'Yes';
       }
 
-      dgx_donate_debug_log('Member info: ' . print_r($member_info,true));
+      dgx_donate_debug_log('About to create new user in the database: ' . print_r($member_info,true));
 
       /* If user doesn't exist, create new user */
       $countries = dgx_donate_get_countries(); // Used to convert countrycodes
@@ -287,7 +280,6 @@ class Dgx_Donate_IPN_Handler {
 
       $new_user = get_user_by( 'email', $member_info['email'] );
       dgx_donate_debug_log('New user created: ' . print_r($new_user, true));
-      return $user_id;
 
     }else{
       /* If User exist update to supporter if only subscriber now */
@@ -302,15 +294,19 @@ class Dgx_Donate_IPN_Handler {
         $updated_user = get_user_by( 'id' , $user_id );
 
         if ( is_wp_error( $user_result ) ) {
-          dgx_donate_debug_log('User update error: ' . print_r($user_result, true));
+          dgx_donate_debug_log('User role update error: ' . print_r($user_result, true));
         } else {
-          dgx_donate_debug_log('User updated to supporter: ' . print_r($updated_user, true));
+          dgx_donate_debug_log('User role updated to supporter: ' . print_r($updated_user, true));
         }
       } else {
-        dgx_donate_debug_log('User not updated. Current role is: ' . $user_role);
+        dgx_donate_debug_log('User role not updated. Current role is: ' . $user_role);
       }
-      return $existingUser->ID;
+      $user_id = $existingUser->ID;
     }
+
+    update_user_meta( $user_id, 'donation_method', 'Paypal' );
+
+    return $user_id;
   }
 
   function copsub_handle_recurring_donation_old_website($donation_id){
