@@ -499,6 +499,8 @@ function bank_transfer_actions($postData){
 	$headers[] = 'Content-type: text/html';
 
   wp_mail( $postData['EMAIL'], $email_subject, $email_content, $headers );
+
+  wp_mail( get_option('dgx_donate_notify_emails'), 'Copenhagen Suborbitals: A user registered for bank donation', $email_content, $headers );
 }
 
 
@@ -536,6 +538,7 @@ function find_or_create_user($postData){
 		update_user_meta( $user_id, 'country', $member_info['country'] );
 		update_user_meta( $user_id, 'city', $postData['CITY'] );
 		update_user_meta( $user_id, 'mailinglist', $member_info['mailinglist'] );
+		update_user_meta( $user_id, 'donation_method', 'Bank' );
 
 		$user = get_user_by( 'email', $postData['EMAIL'] );
 	}
