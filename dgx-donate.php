@@ -729,7 +729,7 @@ function dgx_donate_get_donor_section( $form_content ) { //RA EDIT
 
 	$output .= "<div class='dgx-donate-form-section' id='dgx-donate-form-payment-method-section'>";
 	$output .= "<h2>Payment Method</h2>";
-	$output .= '<p class="clr dgx-type-membership-section">';
+	$output .= '<p class="clr">';
 	$output .= '<input type="radio" name="_dgx_donate_payment_method" id="radio-paypal" value="paypal" checked="checked"><label for="radio-paypal">Paypal</label> ';
 	$output .= '<input type="radio" name="_dgx_donate_payment_method" id="radio-bank" value="bank" class="horiz" ><label for="radio-bank">Bank Transfer</label>';
 	$output .= '</p>';
