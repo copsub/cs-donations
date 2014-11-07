@@ -131,8 +131,11 @@ class Dgx_Donate_IPN_Handler {
     if ( "Completed" != $payment_status ) {
       // If payment_status is not "Completed", then something must have gone wrong.
       // Send an email to check this IPN response manually
-      wp_mail( get_option('dgx_donate_notify_emails'), 'Seamless Donations: Please check this IPN manually, because the payment_status variable != Completed', print_r($_POST,true), '' );
-      dgx_donate_debug_log('Email sent about a donation whose payment_status was not Completed');
+      // We exclude notifications about subscribers signing up
+      if ($_POST["txn_type"] != 'subscr_signup'){
+        wp_mail( get_option('dgx_donate_notify_emails'), 'Seamless Donations: Please check this IPN manually, because the payment_status variable != Completed', print_r($_POST,true), '' );
+        dgx_donate_debug_log('Email sent about a donation whose payment_status was not Completed');
+      }
       return;
     }
 
@@ -148,7 +151,6 @@ class Dgx_Donate_IPN_Handler {
 
       if ( 0 == count( $donation_id ) ) {
 
-        $this->create_new_donation();
         // We haven't seen this session ID already
 
         // Retrieve the data from transient
@@ -214,15 +216,17 @@ class Dgx_Donate_IPN_Handler {
   function copsub_handle_verified_ipn($donation_id){
     // Load donation data into $donation variable
     $donation = get_post_custom($donation_id);
-    dgx_donate_debug_log('Donation: ' . print_r($donation,true));
 
     if(!empty($donation['_dgx_donate_repeating'][0])){
       // Handle recurring donations created in the new website
-      $user_id = $this->copsub_create_user_if_necessary($donation);
+      $new_user = $this->copsub_create_member_if_necessary($donation);
+      $user_id = $new_user[0];
+      $user_password = $new_user[1];
 
     } else if (isset( $_POST[ "subscr_id" ] )){
       // Handle recurring donations coming from the old website
-      $user_id = $this->copsub_create_user_if_necessary($donation);
+      $new_user = $this->copsub_create_member_if_necessary($donation);
+      $user_id = $new_user[0];
       $this->copsub_handle_recurring_donation_old_website($donation_id);
 
     } else {
@@ -230,7 +234,7 @@ class Dgx_Donate_IPN_Handler {
       dgx_donate_debug_log('One-time donation. User not created or updated ');
     }
 
-    $this->copsub_send_email_notifications($donation_id);
+    $this->copsub_send_email_notifications($donation_id, $user_password);
   }
 
   function copsub_create_member_if_necessary($donation){
@@ -306,7 +310,7 @@ class Dgx_Donate_IPN_Handler {
 
     update_user_meta( $user_id, 'donation_method', 'Paypal' );
 
-    return $user_id;
+    return array($user_id, $member_info['user_pass']);
   }
 
   function copsub_handle_recurring_donation_old_website($donation_id){
@@ -317,30 +321,30 @@ class Dgx_Donate_IPN_Handler {
     update_post_meta( $donation_id, '_dgx_donate_session_id', $_POST[ "subscr_id" ] );
   }
 
-  function copsub_send_email_notifications($donation_id){
+  function copsub_send_email_notifications($donation_id, $user_password){
   	// @todo - send different notification for recurring?
     dgx_donate_send_donation_notification( $donation_id );
     $donation_from_old_site = $one_time_donation = $first_time_recurring = false;
 
     if (!isset( $_POST[ "subscr_id" ] )){
       $one_time_donation = true;
-    } else if (count(get_donations_by_meta( '_dgx_donate_session_id', $this->session_id, 1 )) == 1){
+    } else if (count(get_donations_by_meta( '_dgx_donate_session_id', $this->session_id, 100 )) == 1){
       $first_time_recurring = true;
     }
     if (empty( $this->session_id )){
       $donation_from_old_site = true;
     }
 
-    dgx_donate_debug_log("one_time_donation: ".var_export($one_time_donation, true));
-    dgx_donate_debug_log("first_time_recurring: ".var_export($first_time_recurring, true));
-    dgx_donate_debug_log("donation_from_old_site: ".var_export($donation_from_old_site, true));
+    dgx_donate_debug_log("Sending email notifications: some debug information:");
+    dgx_donate_debug_log("  - one_time_donation: ".var_export($one_time_donation, true));
+    dgx_donate_debug_log("  - first_time_recurring: ".var_export($first_time_recurring, true));
+    dgx_donate_debug_log("  - donation_from_old_site: ".var_export($donation_from_old_site, true));
 
     // Send donor notification when:
     //   A. It's a one time donations
     //   B. It's the first recurring donation (when the user subscribes). We exclude donations coming from old website.
     if ($one_time_donation == true || $donation_from_old_site == false && $first_time_recurring == true){
-      dgx_donate_debug_log("Sending thank you email");
-      dgx_donate_send_thank_you_email( $donation_id,"",(!empty($member_info['user_pass'])?$member_info['user_pass']:"") );
+      dgx_donate_send_thank_you_email( $donation_id,"",(!empty($user_password)?$user_password:"") );
     }
   }
 }
