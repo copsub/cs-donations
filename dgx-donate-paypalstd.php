@@ -475,9 +475,6 @@ function generate_post_data(){
 
 
 function bank_transfer_actions($postData){
-	$user = find_or_create_user($postData);
-  $userdata = get_userdata( $user->ID );
-
   // Save the donation into the Seamless Donations table
 	$donation_id = dgx_donate_create_donation_from_transient_data( $postData );
 	delete_transient( $postData['SESSIONID'] );
@@ -485,16 +482,33 @@ function bank_transfer_actions($postData){
   // Send a welcome email
 	$email_subject = 'Bank Transfer instructions for Copenhagen Suborbitals Donation';
 
-	$email_content = file_get_contents(plugin_dir_path(__FILE__).'template_bank_donation_email.html');
-	$email_content = str_replace("%firstname%", $userdata->first_name, $email_content);
-	$email_content = str_replace("%lastname%", $userdata->last_name, $email_content);
-	$email_content = str_replace("%username%", $user->user_login, $email_content);
-	$email_content = str_replace("%email%", $user->user_email, $email_content);
-	$email_content = str_replace("%paymentid%", "SUPPORT".$user->ID, $email_content);
-	$email_content = str_replace("%postalcode%", $userdata->user_zip, $email_content);
-	$email_content = str_replace("%address%", $userdata->user_adress, $email_content);
-	$email_content = str_replace("%city%", $userdata->city, $email_content);
-	$email_content = str_replace("%country%", $userdata->country, $email_content);
+	// We only create a user for users making recurring donations
+	if($postData['REPEATING'] == '1'){
+		$email_template = 'template_bank_donation_email_recurring.html';
+		$email_content = file_get_contents(plugin_dir_path(__FILE__).$email_template);
+		$user = find_or_create_user($postData);
+  	$userdata = get_userdata( $user->ID );
+		$email_content = str_replace("%firstname%", $userdata->first_name, $email_content);
+		$email_content = str_replace("%lastname%", $userdata->last_name, $email_content);
+		$email_content = str_replace("%username%", $user->user_login, $email_content);
+		$email_content = str_replace("%email%", $user->user_email, $email_content);
+		$email_content = str_replace("%paymentid%", "SUPPORT".$user->ID, $email_content);
+		$email_content = str_replace("%postalcode%", $userdata->user_zip, $email_content);
+		$email_content = str_replace("%address%", $userdata->user_adress, $email_content);
+		$email_content = str_replace("%city%", $userdata->city, $email_content);
+		$email_content = str_replace("%country%", $userdata->country, $email_content);
+	}else{
+		$email_template = 'template_bank_donation_email_one_time.html';
+		$email_content = file_get_contents(plugin_dir_path(__FILE__).$email_template);
+		$email_content = str_replace("%firstname%", $postData['FIRSTNAME'], $email_content);
+		$email_content = str_replace("%lastname%", $postData['LASTNAME'], $email_content);
+		$email_content = str_replace("%email%", $postData['EMAIL'], $email_content);
+		$email_content = str_replace("%paymentid%", "DONATION".$donation_id, $email_content);
+		$email_content = str_replace("%postalcode%", $postData['ZIP'], $email_content);
+		$email_content = str_replace("%address%", $postData['ADDRESS'], $email_content);
+		$email_content = str_replace("%city%", $postData['CITY'], $email_content);
+		$email_content = str_replace("%country%", $postData['COUNTRY'], $email_content);
+	}
 
 	$headers[] = 'Content-type: text/html';
 
