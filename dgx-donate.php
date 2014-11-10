@@ -930,6 +930,7 @@ function dgx_donate_send_thank_you_email($donationID, $testAddress="" /*RA: new 
 		$header .= "\"" . $from_email_name . "\" <" . $from_email_address . ">\r\n";
 	}
 
+	dgx_donate_debug_log( "Sending thank you email to ".$toEmail );
 	$mail_sent = wp_mail( $toEmail, $subject, $emailBody, $header );
 
 	if ( ! $mail_sent ) {
