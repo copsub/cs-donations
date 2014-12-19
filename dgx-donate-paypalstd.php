@@ -365,6 +365,7 @@ function generate_post_data(){
 	$honoreeState = $_POST['honoreeState'];
 	$honoreeProvince = $_POST['honoreeProvince'];
 	$honoreeCountry = $_POST['honoreeCountry'];
+	$paymentMethod = $_POST['paymentMethod'];
 
 	if ( 'US' == $honoreeCountry ) {
 		$honoreeProvince = '';
@@ -455,7 +456,7 @@ function generate_post_data(){
 	$postData['ZIP'] = $zip;
 	$postData['INCREASETOCOVER'] = $increaseToCover;
 	$postData['ANONYMOUS'] = $anonymous;
-	$postData['PAYMENTMETHOD'] = "PayPal";
+	$postData['PAYMENTMETHOD'] = $paymentMethod;
 	$postData['EMPLOYERMATCH'] = $employerMatch;
 	$postData['EMPLOYERNAME'] = $employerName;
 	$postData['UKGIFTAID'] = $ukGiftAid;
