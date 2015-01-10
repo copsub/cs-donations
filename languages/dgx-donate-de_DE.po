@@ -16,7 +16,7 @@ msgstr ""
 #: admin-views/completed.php:53 admin-views/completed.php:97
 #: admin-views/main.php:62
 msgid "Thank You Page"
-msgstr ""
+msgstr "Dankeschön-Seite"
 
 #: admin-views/completed.php:24 admin-views/completed.php:37
 #: admin-views/donation-detail.php:9 admin-views/donation-detail.php:22
@@ -27,207 +27,207 @@ msgstr ""
 #: admin-views/settings.php:31 admin-views/templates.php:24
 #: admin-views/templates.php:128
 msgid "You do not have sufficient permissions to access this page."
-msgstr ""
+msgstr "Sie haben keine ausreichende Berechtigung, um auf diese Seite zuzugreifen."
 
 #: admin-views/completed.php:44
 msgid "Thank you page content updated."
-msgstr ""
+msgstr "Danke Seiteninhalt aktualisiert."
 
 #: admin-views/completed.php:71
 msgid "Thank You Page Details"
-msgstr ""
+msgstr "Vielen Dank, dass Sie Details der Seite"
 
 #: admin-views/completed.php:77
 msgid "Thank You Page Text"
-msgstr ""
+msgstr "Danke-Seite Text"
 
 #: admin-views/completed.php:78
 msgid "The text to display to the donor after they complete their donation."
-msgstr ""
+msgstr "Der Text, der dem Spender angezeigt, nachdem sie ihre Spende zu vervollständigen."
 
 #: admin-views/completed.php:98
 msgid "On this page you can configure a special thank you message which will appear to your donors after they complete their donation.  This is separate from the thank you email that gets emailed to your donor."
-msgstr ""
+msgstr "Auf dieser Seite können Sie ein spezielles Dankeschön-Mail die an Ihre Spender erscheinen wird, nachdem sie ihre Spende abzuschließen konfigurieren. Dies ist unabhängig von der Dankeschön-E-Mail, die auf Ihre Spender per E-Mail erhält."
 
 #: admin-views/donation-detail.php:28
 msgid "Donation Detail"
-msgstr ""
+msgstr "Donation Details"
 
 #: admin-views/donation-detail.php:35
 msgid "Donation deleted"
-msgstr ""
+msgstr "Donation gelöscht"
 
 #: admin-views/donation-detail.php:50
 msgid "Donation Details"
-msgstr ""
+msgstr "Donation-Details"
 
 #: admin-views/donation-detail.php:59 admin-views/donation-detail.php:216
 #: admin-views/donor-detail.php:43 admin-views/main.php:108
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: admin-views/donation-detail.php:66 admin-views/donations.php:120
 #: admin-views/donor-detail.php:45 admin-views/donors.php:121
 #: admin-views/main.php:110
 msgid "Amount"
-msgstr ""
+msgstr "Menge"
 
 #: admin-views/donation-detail.php:71 admin-views/donation-detail.php:82
 #: admin-views/donation-detail.php:100 admin-views/donation-detail.php:111
 #: admin-views/donation-detail.php:120 admin-views/donation-detail.php:182
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
 #: admin-views/donation-detail.php:73 admin-views/donation-detail.php:80
 #: admin-views/donation-detail.php:98 admin-views/donation-detail.php:109
 #: admin-views/donation-detail.php:117 admin-views/donation-detail.php:184
 msgid "No"
-msgstr ""
+msgstr "Nein"
 
 #: admin-views/donation-detail.php:75
 msgid "Add to Mailing List?"
-msgstr ""
+msgstr "In den Mailing-Listen?"
 
 #: admin-views/donation-detail.php:84
 msgid "Would like to remain anonymous?"
-msgstr ""
+msgstr "Möchte anonym bleiben?"
 
 #: admin-views/donation-detail.php:87 admin-views/donations.php:97
 #: admin-views/donor-detail.php:58 admin-views/donors.php:144
 msgid "Undesignated"
-msgstr ""
+msgstr "Undesignated"
 
 #: admin-views/donation-detail.php:92 admin-views/templates.php:68
 msgid "Designated Fund"
-msgstr ""
+msgstr "Designated Fund"
 
 #: admin-views/donation-detail.php:102 admin-views/templates.php:92
 #: dgx-donate.php:654
 msgid "Employer Match"
-msgstr ""
+msgstr "Arbeitgeber Spiel"
 
 #: admin-views/donation-detail.php:113
 msgid "UK Gift Aid"
-msgstr ""
+msgstr "UK Gift Aid"
 
 #: admin-views/donation-detail.php:136
 msgid "in honor of"
-msgstr ""
+msgstr "zu Ehren"
 
 #: admin-views/donation-detail.php:138
 msgid "in memory of"
-msgstr ""
+msgstr "in Erinnerung"
 
 #: admin-views/donation-detail.php:143
 msgid "Send acknowledgement via email to"
-msgstr ""
+msgstr "Bestätigung senden per E-Mail an"
 
 #: admin-views/donation-detail.php:147
 msgid "Send acknowledgement via postal mail to"
-msgstr ""
+msgstr "Bestätigung senden per Post zu"
 
 #: admin-views/donation-detail.php:172 admin-views/templates.php:100
 #: dgx-donate.php:574
 msgid "Tribute Gift"
-msgstr ""
+msgstr "Tribute Geschenk"
 
 #: admin-views/donation-detail.php:176 dgx-donate.php:743
 msgid "Payment Method"
-msgstr ""
+msgstr "Zahlungsmethode"
 
 #: admin-views/donation-detail.php:186
 msgid "Repeating"
-msgstr ""
+msgstr "Wiederholung"
 
 #: admin-views/donation-detail.php:190
 msgid "Session ID"
-msgstr ""
+msgstr "Sitzungs-ID"
 
 #: admin-views/donation-detail.php:194 admin-views/donation-detail.php:217
 msgid "Transaction ID"
-msgstr ""
+msgstr "Transaktion ID"
 
 #: admin-views/donation-detail.php:208
 msgid "Related Donations"
-msgstr ""
+msgstr "Verwandte Spenden"
 
 #: admin-views/donation-detail.php:210
 msgid "For repeating donations, displays a list of other donations in the series (subscription)"
-msgstr ""
+msgstr "Für wiederkehrende Spenden, zeigt eine Liste von anderen Spenden in der Serie (Abonnement)"
 
 #: admin-views/donation-detail.php:234
 msgid "No related donations found"
-msgstr ""
+msgstr "Keine verwandten Spenden gefunden"
 
 #: admin-views/donation-detail.php:252
 msgid "Delete this Donation"
-msgstr ""
+msgstr "Löschen Sie diese Donation"
 
 #: admin-views/donation-detail.php:253
 msgid "Click the following button to delete this donation.  This will also remove this donation from all reports.  This operation cannot be undone."
-msgstr ""
+msgstr "Klicken Sie auf den folgenden Button, diese Spende zu löschen. Dies wird auch diese Spende aus allen Berichten zu entfernen. Dieser Vorgang kann nicht rückgängig gemacht werden."
 
 #: admin-views/donation-detail.php:256
 msgid "This is a repeating donation (subscription).  Deleting this donation does NOT end the subscription.  The donor will need to log into PayPal to end the subscription."
-msgstr ""
+msgstr "Dies ist eine wiederkehrende Spende (Abonnement). Das Löschen dieser Spende nicht zu Ende des Abonnements. Die Spender müssen in PayPal einzuloggen, um das Abonnement zu beenden."
 
 #: admin-views/donation-detail.php:263
 msgid "Delete Donation"
-msgstr ""
+msgstr "Donation löschen"
 
 #: admin-views/donations.php:13 admin-views/donations.php:14
 #: admin-views/donations.php:25 admin-views/main.php:46 dgx-donate.php:407
 msgid "Donations"
-msgstr ""
+msgstr "Spenden"
 
 #: admin-views/donations.php:57
 msgid "Donation Report for %1$s to %2$s"
-msgstr ""
+msgstr "Donation Bericht für %1$s auf %2$s"
 
 #: admin-views/donations.php:118
 msgid "Fund/Date"
-msgstr ""
+msgstr "Fonds / Datum"
 
 #: admin-views/donations.php:119 admin-views/main.php:109
 msgid "Donor"
-msgstr ""
+msgstr "Spender"
 
 #: admin-views/donations.php:166
 msgid "Fund Subtotal"
-msgstr ""
+msgstr "Fonds Zwischensumme"
 
 #: admin-views/donations.php:179 admin-views/donors.php:183
 msgid "Grand Total"
-msgstr ""
+msgstr "Gesamtsumme"
 
 #: admin-views/donations.php:185 admin-views/donor-detail.php:34
 #: admin-views/main.php:147
 msgid "No donations found."
-msgstr ""
+msgstr "Keine Spenden gefunden."
 
 #: admin-views/donations.php:199
 msgid "Export Report as Spreadsheet (CSV)"
-msgstr ""
+msgstr "Bericht exportieren als Tabellenkalkulation (CSV)"
 
 #: admin-views/donations.php:200
 msgid "Click the following button to export detailed information for each donation in this report to a comma-separated-value (CSV) file compatible with most spreadsheet software."
-msgstr ""
+msgstr "Klicken Sie auf die folgende Schaltfläche, um detaillierte Informationen für jede Spende in diesem Bericht (CSV) Datei mit den meisten Tabellenkalkulationsprogrammen kompatibel zu exportieren, um eine kommagetrennte-Wert."
 
 #: admin-views/donations.php:205
 msgid "Export Report"
-msgstr ""
+msgstr "Bericht exportieren"
 
 #: admin-views/donations.php:210
 msgid "Date Range"
-msgstr ""
+msgstr "Zeitraum"
 
 #: admin-views/donations.php:217 admin-views/donors.php:206
 msgid "Start Date"
-msgstr ""
+msgstr "Startdatum"
 
 #: admin-views/donations.php:220 admin-views/donors.php:209
 msgid "End Date"
-msgstr ""
+msgstr "Enddatum"
 
 #: admin-views/donations.php:224 admin-views/donors.php:213
 #: admin-views/settings.php:145 admin-views/settings.php:156
@@ -235,679 +235,681 @@ msgstr ""
 #: admin-views/settings.php:226 admin-views/settings.php:244
 #: admin-views/settings.php:261 admin-views/settings.php:278
 msgid "Update"
-msgstr ""
+msgstr "Aktualisierung"
 
 #: admin-views/donor-detail.php:9
 msgid "Donor Detail"
-msgstr ""
+msgstr "Donor-Detail"
 
 #: admin-views/donor-detail.php:40
 msgid "Donations by This Donor"
-msgstr ""
+msgstr "Spenden von Diese Spender"
 
 #: admin-views/donor-detail.php:44 admin-views/donors.php:120
 msgid "Fund"
-msgstr ""
+msgstr "Fonds"
 
 #: admin-views/donor-detail.php:81
 msgid "Donor Total"
-msgstr ""
+msgstr "Gebergesamt"
 
 #: admin-views/donor-detail.php:127 dgx-donate.php:679
 msgid "Donor Information"
-msgstr ""
+msgstr "Spenderinformation"
 
 #: admin-views/donors.php:13 admin-views/donors.php:14
 #: admin-views/donors.php:25 admin-views/main.php:50
 msgid "Donors"
-msgstr ""
+msgstr "Die Geber"
 
 #: admin-views/donors.php:57
 msgid "Donor Report for %1$s to %2$s"
-msgstr ""
+msgstr "Donor-Bericht für %1$s auf %2$s"
 
 #: admin-views/donors.php:119
 msgid "Donor/Date"
-msgstr ""
+msgstr "Donor / Datum"
 
 #: admin-views/donors.php:170
 msgid "Donor Subtotal"
-msgstr ""
+msgstr "Donor Zwischensumme"
 
 #: admin-views/donors.php:188
 msgid "No donors found."
-msgstr ""
+msgstr "Keine Spender gefunden."
 
 #: admin-views/funds.php:13 admin-views/funds.php:14 admin-views/main.php:54
 msgid "Funds"
-msgstr ""
+msgstr "Mittel"
 
 #: admin-views/funds.php:45 admin-views/funds.php:133
 msgid "Designated Funds"
-msgstr ""
+msgstr "Designated Funds"
 
 #: admin-views/funds.php:49
 msgid "Fund added."
-msgstr ""
+msgstr "Fonds aufgenommen."
 
 #: admin-views/funds.php:78 admin-views/funds.php:84
 msgid "Fund(s) updated."
-msgstr ""
+msgstr "Fonds (e) aktualisiert."
 
 #: admin-views/funds.php:99
 msgid "Fund(s) deleted."
-msgstr ""
+msgstr "Fonds (n) gelöscht."
 
 #: admin-views/funds.php:140
 msgid "Fund Name"
-msgstr ""
+msgstr "Fondsname"
 
 #: admin-views/funds.php:141
 msgid "Display on Donation Form"
-msgstr ""
+msgstr "Anzeige auf Spendenformular"
 
 #: admin-views/funds.php:142
 msgid "Delete"
-msgstr ""
+msgstr "Löschen"
 
 #: admin-views/funds.php:165
 msgid "Note:  Deleting a fund from this list does NOT affect any donations already made to that fund, or any reports for that fund."
-msgstr ""
+msgstr "Hinweis: Das Löschen eines Fonds aus dieser Liste hat keinen Einfluss auf bereits Spenden an diesen Fonds gemacht, oder keine Berichte für diesen Fonds."
 
 #: admin-views/funds.php:167 admin-views/templates.php:209
 msgid "Save Changes"
-msgstr ""
+msgstr "Änderungen speichern"
 
 #: admin-views/funds.php:171
 msgid "You have no designated funds defined"
-msgstr ""
+msgstr "Sie haben festgelegt keine ausgewiesenen Mittel"
 
 #: admin-views/funds.php:180 admin-views/funds.php:190
 msgid "Add New Designated Fund"
-msgstr ""
+msgstr "Neue Designated Fund hinzufügen"
 
 #: admin-views/funds.php:185
 msgid "Name"
-msgstr ""
+msgstr "Nam"
 
 #: admin-views/funds.php:187
 msgid "The name of the desginated fund, as you want it to appear to visitors."
-msgstr ""
+msgstr "Der Name des desginated Fonds, wie Sie wollen, dass es für die Besucher angezeigt."
 
 #: admin-views/help.php:13 admin-views/help.php:14 admin-views/help.php:51
 #: admin-views/main.php:74
 msgid "Help/FAQ"
-msgstr ""
+msgstr "Hilfe/FAQ"
 
 #: admin-views/help.php:28
 msgid "What is the shortcode I need to insert on a page to see the donation form?"
-msgstr ""
+msgstr "Was ist die Kurzwahlnummer für das Senden auf einer Seite einfügen, um das Spendenformular sehen?"
 
 #: admin-views/help.php:32
 msgid "Do I need to set my IPN notification URL at PayPal?"
-msgstr ""
+msgstr "Muss ich meine IPN Benachrichtigung URL bei PayPal ein?"
 
 #: admin-views/help.php:33
 msgid "In general it is not needed, but some users have needed to set it to get notifications working correctly."
-msgstr ""
+msgstr "In der Regel ist es nicht nötig, aber einige Benutzer benötigt, um es einrichten zu erhalten Benachrichtigungen ordnungsgemäß funktioniert."
 
 #: admin-views/help.php:36
 msgid "What URL should I use for the IPN notification URL at PayPal?"
-msgstr ""
+msgstr "Welche URL soll ich für die IPN-Benachrichtigung URL bei PayPal?"
 
 #: admin-views/help.php:37
 msgid "The correct URL to use is displayed on your settings page under Payment Gateways."
-msgstr ""
+msgstr "Die richtige URL zu bedienen ist von Ihren Einstellungen Seite unter Zahlungs-Gateways angezeigt."
 
 #: admin-views/help.php:40
 msgid "How does my donor end a repeating donation?"
-msgstr ""
+msgstr "Wie kommt mein Spender Ende eine Spende wiederholen?"
 
 #: admin-views/help.php:41
 msgid "The donor can log into their PayPal account, go to their profile under 'My Account,' then 'Preapproved Payments', and end the repeating donation there."
-msgstr ""
+msgstr "Der Spender kann in ihr PayPal-Konto einloggen, gehen Sie zu ihrem Profil unter 'Mein Konto', dann 'preapproved Zahlungen', und am Ende der wiederkehrenden Spende gibt."
 
 #: admin-views/help.php:44
 msgid "I have a question not answered here.  Where can I find the plugin's support forum?"
-msgstr ""
+msgstr "Ich habe eine Frage, die hier nicht beantwortet. Wo kann ich den Plugin-Support-Forum finden?"
 
 #: admin-views/help.php:45
 msgid "You can find the support forum at"
-msgstr ""
+msgstr "Sie können die Support-Forum zu finden,"
 
 #: admin-views/log.php:13 admin-views/log.php:14 admin-views/log.php:45
 #: admin-views/main.php:70
 msgid "Log"
-msgstr ""
+msgstr "Log-Notiz"
 
 #: admin-views/log.php:40
 msgid "Log cleared"
-msgstr ""
+msgstr "Log gelöscht"
 
 #: admin-views/log.php:57
 msgid "The log is empty."
-msgstr ""
+msgstr "Das Protokoll ist leer."
 
 #: admin-views/log.php:72
 msgid "Clear Log"
-msgstr ""
+msgstr "Log-Datei bereinigen"
 
 #: admin-views/main.php:12 admin-views/main.php:13
 msgid "Seamless Donations"
-msgstr ""
+msgstr "Nahtlose Spenden"
 
 #: admin-views/main.php:41
 msgid "Seamless Donations for WordPress"
-msgstr ""
+msgstr "Nahtlose Spenden für Wordpress"
 
 #: admin-views/main.php:58 admin-views/templates.php:14
 #: admin-views/templates.php:15 admin-views/templates.php:165
 msgid "Thank You Emails"
-msgstr ""
+msgstr "Vielen Dank, dass Sie E-Mails"
 
 #: admin-views/main.php:66 admin-views/settings.php:14
 #: admin-views/settings.php:15 admin-views/settings.php:118
 msgid "Settings"
-msgstr ""
+msgstr "Einstellungen"
 
 #: admin-views/main.php:79
 msgid "Quick Links"
-msgstr ""
+msgstr "Nützliche Links"
 
 #: admin-views/main.php:96
 msgid "Recent Donations"
-msgstr ""
+msgstr "Letzte Spenden"
 
 #: admin-views/main.php:159
 msgid "Latest News"
-msgstr ""
+msgstr "Neuigkeiten"
 
 #: admin-views/main.php:163
 msgid "What's up with Seamless Donations"
-msgstr ""
+msgstr "Was ist los mit Seamless Spenden"
 
 #: admin-views/settings.php:39 admin-views/settings.php:46
 #: admin-views/settings.php:57 admin-views/settings.php:79
 #: admin-views/settings.php:86 admin-views/settings.php:93
 #: admin-views/settings.php:100 admin-views/settings.php:107
 msgid "Settings updated."
-msgstr ""
+msgstr "Einstellungen aktualisiert."
 
 #: admin-views/settings.php:132
 msgid "Notification Emails"
-msgstr ""
+msgstr "Benachrichtigung E-Mails"
 
 #: admin-views/settings.php:133
 msgid "Enter one or more emails that should be notified when a new donation arrives.  You can separate multiple email addresses with commas."
-msgstr ""
+msgstr "Geben Sie eine oder mehrere E-Mails, die benachrichtigt werden sollen, wenn eine neue Spende ankommt. Sie können mehrere E-Mail-Adressen durch Kommas trennen."
 
 #: admin-views/settings.php:140
 msgid "Notification Email Address(es)"
-msgstr ""
+msgstr "Anmeldung E-Mail Adresse (n)"
 
 #: admin-views/settings.php:142
 msgid "Email address(es) that should be notified (e.g. administrators) of new donations."
-msgstr ""
+msgstr "E-Mail-Adresse (n), die benachrichtigt werden soll (zB Administratoren) neuer Spenden."
 
 #: admin-views/settings.php:159
 msgid "Error: No payment gateways found"
-msgstr ""
+msgstr "Fehler: Keine Zahlungs-Gateways gefunden"
 
 #: admin-views/settings.php:172
 msgid "Giving Levels"
-msgstr ""
+msgstr "Geben Levels"
 
 #: admin-views/settings.php:173
 msgid "Select one or more suggested giving levels for your donors to choose from."
-msgstr ""
+msgstr "Wählen Sie eine oder mehrere Ebenen vorgeschlagen, was für Ihre Spender zur Auswahl."
 
 #: admin-views/settings.php:190
 msgid "Currency"
-msgstr ""
+msgstr "Währung"
 
 #: admin-views/settings.php:191
 msgid "Select the currency you'd like to receive donations in."
-msgstr ""
+msgstr "Wählen Sie die Währung, die Sie möchten, dass Spenden erhalten."
 
 #: admin-views/settings.php:204
 msgid "Default Country / State / Province"
-msgstr ""
+msgstr "Standard Land / Bundesland / Kanton"
 
 #: admin-views/settings.php:205
 msgid "Select the default country / state / province for the donation form."
-msgstr ""
+msgstr "Wählen Sie die Standard Land / Staat / Provinz für das Spendenformular."
 
 #: admin-views/settings.php:232
 msgid "Tribute Gift Section"
-msgstr ""
+msgstr "Tribute Geschenk Abschnitt"
 
 #: admin-views/settings.php:233
 msgid "Show or hide the Tribute Gift section of the donation form."
-msgstr ""
+msgstr "Ein- oder Ausblenden der Tribute Geschenk Teil des Spendenformular."
 
 #: admin-views/settings.php:241
 msgid "Show the Tribute Gift form section"
-msgstr ""
+msgstr "Lassen Sie sich die Tribute Geschenk Formularabschnitt"
 
 #: admin-views/settings.php:242
 msgid "Do not show the Tribute Gift form section"
-msgstr ""
+msgstr "Stellen Sie das Tribute Geschenk Form Abschnitt nicht angezeigt"
 
 #: admin-views/settings.php:249
 msgid "Employer Match Section"
-msgstr ""
+msgstr "Arbeitgeber Spiel Abschnitt"
 
 #: admin-views/settings.php:250
 msgid "Show or hide the Employer Match section of the donation form."
-msgstr ""
+msgstr "Ein- oder Ausblenden der Arbeitgeber Spiel Teil des Spendenformular."
 
 #: admin-views/settings.php:258
 msgid "Show the Employer Match form section"
-msgstr ""
+msgstr "Lassen Sie sich die Arbeitgeber Spiel Formularabschnitt"
 
 #: admin-views/settings.php:259
 msgid "Do not show the Employer Match form section"
-msgstr ""
+msgstr "Den Arbeitgeber Spiel Formularabschnitt nicht zeigen"
 
 #: admin-views/settings.php:266
 msgid "Scripts"
-msgstr ""
+msgstr "Scripte"
 
 #: admin-views/settings.php:267
 msgid "Whether to load scripts in the header or footer."
-msgstr ""
+msgstr "Ob Skripte in der Kopf- oder Fußzeile zu laden."
 
 #: admin-views/settings.php:275
 msgid "Load scripts in the header (default)"
-msgstr ""
+msgstr "Laden Sie Skripte in der Kopfzeile (Standard)"
 
 #: admin-views/settings.php:276
 msgid "Load scripts in the footer"
-msgstr ""
+msgstr "Laden Sie Skripte in der Fußzeile"
 
 #: admin-views/templates.php:31
 msgid "From / Reply-To Name"
-msgstr ""
+msgstr "Von / Reply-To-Name"
 
 #: admin-views/templates.php:32
 msgid "The name the thank you email should appear to come from (e.g. your organization name or your name)."
-msgstr ""
+msgstr "Der Name der E-Mail sollte danke scheinen aus (zB den Namen Ihrer Organisation oder Ihrem Namen) zu kommen."
 
 #: admin-views/templates.php:38
 msgid "From / Reply-To Email Address"
-msgstr ""
+msgstr "Von / Reply-To Mail-Adresse"
 
 #: admin-views/templates.php:39
 msgid "The email address the thank you email should appear to come from."
-msgstr ""
+msgstr "Die E-Mail-Adresse die E-Mail danke erscheinen soll herkommen."
 
 #: admin-views/templates.php:45
 msgid "Subject"
-msgstr ""
+msgstr "Betreff"
 
 #: admin-views/templates.php:46
 msgid "The subject of the email (e.g. Thank You for Your Donation)."
-msgstr ""
+msgstr "Das Thema der E-Mail (zB Vielen Dank für Ihre Spende)."
 
 #: admin-views/templates.php:52
 msgid "Body"
-msgstr ""
+msgstr "Nachrichtentext"
 
 #: admin-views/templates.php:53
 msgid "The body of the email message to all donors."
-msgstr ""
+msgstr "Der Körper der E-Mail-Nachricht an alle Spender."
 
 #: admin-views/templates.php:60
 msgid "Recurring Donations"
-msgstr ""
+msgstr "Wiederkehrende Spenden"
 
 #: admin-views/templates.php:61
 msgid "This message will be included when the donor elects to make their donation recurring."
-msgstr ""
+msgstr "Diese Meldung aufgenommen werden, wenn der Spender wählt ihre Spende wiederkehr zu machen."
 
 #: admin-views/templates.php:69
 msgid "This message will be included when the donor designates their donation to a specific fund."
-msgstr ""
+msgstr "Diese Meldung aufgenommen werden, wenn der Spender bezeichnet ihre Spende einem bestimmten Fonds."
 
 #: admin-views/templates.php:76
 msgid "Anonymous Donations"
-msgstr ""
+msgstr "Anonyme Spenden"
 
 #: admin-views/templates.php:77
 msgid "This message will be included when the donor requests their donation get kept anonymous."
-msgstr ""
+msgstr "Diese Meldung aufgenommen werden, wenn der Spender fordert die Spende anonym zu werden."
 
 #: admin-views/templates.php:84
 msgid "Mailing List Join"
-msgstr ""
+msgstr "Mailingliste zu abonnieren"
 
 #: admin-views/templates.php:85
 msgid "This message will be included when the donor elects to join the mailing list."
-msgstr ""
+msgstr "Diese Meldung aufgenommen werden, wenn der Spender sich dafür entscheidet, die Mailingliste zu abonnieren."
 
 #: admin-views/templates.php:93
 msgid "This message will be included when the donor selects the employer match."
-msgstr ""
+msgstr "Diese Meldung aufgenommen werden, wenn der Spender wählt die Arbeitgeber Spiel."
 
 #: admin-views/templates.php:101
 msgid "This message will be included when the donor elects to make their donation a tribute gift."
-msgstr ""
+msgstr "Diese Meldung aufgenommen werden, wenn der Spender sich dafür entscheidet, ihre Spende eine Hommage Geschenk machen."
 
 #: admin-views/templates.php:108
 msgid "Closing"
-msgstr ""
+msgstr "Zum Schluss"
 
 #: admin-views/templates.php:109
 msgid "The closing text of the email message to all donors."
-msgstr ""
+msgstr "Der Schlusstext der E-Mail an alle Spender."
 
 #: admin-views/templates.php:116
 msgid "Signature"
-msgstr ""
+msgstr "Unterschrift"
 
 #: admin-views/templates.php:117
 msgid "The signature at the end of the email message to all donors."
-msgstr ""
+msgstr "Die Signatur am Ende der E-Mail an alle Spender."
 
 #: admin-views/templates.php:147
 msgid "Templates updated."
-msgstr ""
+msgstr "Vorlagen aktualisiert."
 
 #: admin-views/templates.php:156
 msgid "Test email sent."
-msgstr ""
+msgstr "Test-E-Mail gesendet."
 
 #: admin-views/templates.php:186
 msgid "Email Template"
-msgstr ""
+msgstr "E-Mail-Vorlage"
 
 #: admin-views/templates.php:188
 msgid "You can include placeholders such as [firstname] [lastname] [fund] and/or [amount]."
-msgstr ""
+msgstr "Sie können Platzhalter wie [Vorname] [Nachname] [Fonds] und / oder [Betrag] gehören."
 
 #: admin-views/templates.php:189
 msgid "These placeholders will automatically be filled in with the donor and donation details."
-msgstr ""
+msgstr "Diese Platzhalter werden automatisch in den Spender und Spende Details ausgefüllt werden."
 
 #: admin-views/templates.php:221
 msgid "Send a Test Email"
-msgstr ""
+msgstr "Senden Sie eine Test-E-Mail"
 
 #: admin-views/templates.php:222
 msgid "Enter an email address (e.g. your own) to have a test email sent using the template."
-msgstr ""
+msgstr "Geben Sie eine E-Mail-Adresse (zB Ihre eigenen), um eine Test-Email versandt, mit dem Template haben."
 
 #: admin-views/templates.php:228
 msgid "Email Address"
-msgstr ""
+msgstr "E-Mail Adresse"
 
 #: admin-views/templates.php:230
 msgid "The email address to receive the test message."
-msgstr ""
+msgstr "Die E-Mail-Adresse, um die Testmeldung."
 
 #: admin-views/templates.php:233
 msgid "Send Test Email"
-msgstr ""
+msgstr "Test Email senden"
 
 #: dgx-donate-admin.php:66
 msgid "Thank you for electing to have your donation automatically repeated each month."
-msgstr ""
+msgstr "Wir danken Ihnen für die Wahl, dass Ihre Spende automatisch jeden Monat wiederholt."
 
 #: dgx-donate-paypalstd.php:64
 msgid "PayPal Email Address"
-msgstr ""
+msgstr "PayPal E-Mail-Adresse"
 
 #: dgx-donate-paypalstd.php:66
 msgid "The email address at which to receive payments."
-msgstr ""
+msgstr "Die E-Mail-Adresse, unter der die Zahlungen erhalten."
 
 #: dgx-donate-paypalstd.php:69
 msgid "Mode:"
-msgstr ""
+msgstr "Modus:"
 
 #: dgx-donate-paypalstd.php:70
 msgid "Sandbox (Test Server)"
-msgstr ""
+msgstr "Sandbox (Testserver)"
 
 #: dgx-donate-paypalstd.php:71
 msgid "Live (Production Server)"
-msgstr ""
+msgstr "Leben (Productionserver)"
 
 #: dgx-donate-paypalstd.php:72
 msgid "IPN URL"
-msgstr ""
+msgstr "IPN URL"
 
 #: dgx-donate-paypalstd.php:217 dgx-donate.php:408
 msgid "Donation"
-msgstr ""
+msgstr "Spenden"
 
 #: dgx-donate-paypalstd.php:262
 msgid "Support us"
-msgstr ""
+msgstr "Unterstützen Sie uns"
 
 #: dgx-donate-paypalstd.php:263
 msgid "Even though everyone in Copenhagen Suborbitals are working for free, building rockets requires funding. We don’t pay salary, but we spend money buying the materials and tools we need. Certain costs cannot be avoided either, such as the rent of a construction site, rocket fuel, structural steel and transportation to the launchsite near the island of Bornholm."
-msgstr ""
+msgstr "Auch wenn jeder in Copenhagen Suborbitals sind kostenlos, Gebäude Raketen arbeiten erfordert Finanzierung. Wir zahlen keine Gehälter, aber wir geben Geld den Kauf der Materialien und Werkzeuge, die wir brauchen. Bestimmte Kosten können auch nicht vermieden werden kann, wie beispielsweise die Vermietung von einer Baustelle, Raketentreibstoff, Baustahl und Transport zum launchsite in der Nähe der Insel Bornholm."
 
 #: dgx-donate-paypalstd.php:264
 msgid "This is a crowdsourcing project – and we need your help to succeed!"
-msgstr ""
+msgstr "Dies ist eine Crowdsourcing-Projekt - und wir brauchen Ihre Hilfe, um erfolgreich zu sein!"
 
 #: dgx-donate-paypalstd.php:265
 msgid "Below you can choose a one time donation, or to become a “Copenhagen Suborbitals Supporter” by donating every month. More than 1000 people from all over the world have already signed up as monthly supporters – but we need a lot more to reach our goal!"
-msgstr ""
+msgstr "Nachfolgend finden Sie eine einmalige Spende entscheiden oder ein “Copenhagen Suborbitals Supporter” werden durch die Spende jeden Monat. Mehr als 1000 Menschen aus der ganzen Welt haben sich bereits als monatliche Unterstützer unterschrieben - aber wir brauchen noch viel mehr, um unser Ziel zu erreichen!"
 
 #: dgx-donate-paypalstd.php:266
 msgid "Please choose an amount and type in your details below. When you press “Submit” you will be asked to checkout and pay via PayPal."
-msgstr ""
+msgstr "Bitte wählen Sie einen Betrag und geben Sie Ihre Daten ein. Wenn Sie die Taste “Senden” werden Sie gebeten, Prüfung und Lohn durch PayPal werden."
 
 #: dgx-donate-paypalstd.php:281 dgx-donate.php:446
 msgid "Warning - Seamless Donations is currently configured to use the Sandbox (Test Server)."
-msgstr ""
+msgstr "Warnung - Nahtlose Spenden ist zurzeit so konfiguriert, um die Sandbox (Testserver) verwenden."
 
 #: dgx-donate-paypalstd.php:289
 msgid "Warning:  To make a donation, you must first enable JavaScript."
-msgstr ""
+msgstr "Warnung: Um eine Spende zu machen, müssen Sie zuerst JavaScript aktivieren."
 
 #: dgx-donate-paypalstd.php:306
 msgid "Submit"
-msgstr ""
+msgstr "Senden"
 
 #: dgx-donate.php:409
 msgid "Add New Donation"
-msgstr ""
+msgstr "In New Donation"
 
 #: dgx-donate.php:410
 msgid "Edit Donation"
-msgstr ""
+msgstr "Bearbeiten Donation"
 
 #: dgx-donate.php:411
 msgid "New Donation"
-msgstr ""
+msgstr "New Donation"
 
 #: dgx-donate.php:412
 msgid "View Donation"
-msgstr ""
+msgstr "Ansicht Donation"
 
 #: dgx-donate.php:413
 msgid "Donations Received"
-msgstr ""
+msgstr "Spenden empfangen"
 
 #: dgx-donate.php:489
 msgid "Membership (monthly donation)"
-msgstr ""
+msgstr "Mitgliedschaft (monatliche Spende)"
 
 #: dgx-donate.php:490
 msgid "One time donation"
-msgstr ""
+msgstr "Einmalige Spende"
 
 #: dgx-donate.php:492
 msgid "Donation Information"
-msgstr ""
+msgstr "Spenden Informationen"
 
 #: dgx-donate.php:493
 msgid "I would like to make a monthly donation in the amount of:"
-msgstr ""
+msgstr "Ich möchte eine monatliche Spende in Höhe von machen:"
 
 #: dgx-donate.php:494
 msgid "I would like to make a one time donation in the amount of:"
-msgstr ""
+msgstr "Ich möchte eine einmalige Spende in der Höhe von machen:"
 
 #: dgx-donate.php:511
 msgid "Other"
-msgstr ""
+msgstr "Andere"
 
 #: dgx-donate.php:532
 msgid "I would like to designate this donation to a specific fund"
-msgstr ""
+msgstr "Ich möchte diese Spende an einen bestimmten Fonds zu bezeichnen"
 
 #: dgx-donate.php:536
 msgid "Designated Fund: "
-msgstr ""
+msgstr "Designated Fund: "
 
 #: dgx-donate.php:578
 msgid "Check here to donate in honor or memory of someone"
-msgstr ""
+msgstr "Überprüfen Sie hier, um zu Ehren oder zum Gedenken an jemand spenden"
 
 #: dgx-donate.php:582
 msgid "Check here if this is a memorial gift"
-msgstr ""
+msgstr "Prüfen Sie hier, ob dies eine Gedenkgeschenk"
 
 #: dgx-donate.php:586
 msgid "Honoree's Name:"
-msgstr ""
+msgstr "Titelträgers Name:"
 
 #: dgx-donate.php:591
 msgid "Send acknowledgement via email to "
-msgstr ""
+msgstr "Bestätigung senden per E-Mail an "
 
 #: dgx-donate.php:595 dgx-donate.php:609
 msgid "Name:"
-msgstr ""
+msgstr "Netzwerkname:"
 
 #: dgx-donate.php:599 dgx-donate.php:693
 msgid "Email:"
-msgstr ""
+msgstr "E-Mail: "
 
 #: dgx-donate.php:605
 msgid "Send acknowledgement via postal mail to "
-msgstr ""
+msgstr "Bestätigung senden per Post zu "
 
 #: dgx-donate.php:613 dgx-donate.php:697
 msgid "Address:"
-msgstr ""
+msgstr "Adresse:"
 
 #: dgx-donate.php:617 dgx-donate.php:706
 msgid "City:"
-msgstr ""
+msgstr " Stadt:"
 
 #: dgx-donate.php:623 dgx-donate.php:711
 msgid "State:"
-msgstr ""
+msgstr "Zustand:"
 
 #: dgx-donate.php:627 dgx-donate.php:715
 msgid "Province:"
-msgstr ""
+msgstr "Provinz:"
 
 #: dgx-donate.php:631 dgx-donate.php:719
 msgid "Country:"
-msgstr ""
+msgstr "Land:"
 
 #: dgx-donate.php:635 dgx-donate.php:723
 msgid "Postal Code:"
-msgstr ""
+msgstr "Postleitzahl:"
 
 #: dgx-donate.php:658
 msgid "Check here if your employer matches donations"
-msgstr ""
+msgstr "Prüfen Sie hier, ob Ihr Arbeitgeber übereinstimmt Spenden"
 
 #: dgx-donate.php:662
 msgid "Employer Name:"
-msgstr ""
+msgstr "Name des Arbeitgebers:"
 
 #: dgx-donate.php:681
 msgid "First Name:"
-msgstr ""
+msgstr "Vorname:"
 
 #: dgx-donate.php:685
 msgid "Last Name:"
-msgstr ""
+msgstr "Nachname:"
 
 #: dgx-donate.php:689
 msgid "Phone:"
-msgstr ""
+msgstr "Telefon:"
 
 #: dgx-donate.php:701
 msgid "Address 2:"
-msgstr ""
+msgstr "Adresse 2:"
 
 #: dgx-donate.php:702
 msgid "(optional)"
-msgstr ""
+msgstr "(optional)"
 
 #: dgx-donate.php:733
 msgid "Add me to your mailing list"
-msgstr ""
+msgstr "Füge mich zu Deiner Mailingliste"
 
 #: dgx-donate.php:737
 msgid "Please do not publish my name.  I would like to remain anonymous."
-msgstr ""
+msgstr "Bitte meinen Namen nicht veröffentlichen. Ich möchte anonym bleiben."
 
 #: dgx-donate.php:746
 msgid "Bank Transfer"
-msgstr ""
+msgstr "Überweisung"
 
 #: dgx-donate.php:763
 msgid "Donor Address"
-msgstr ""
+msgstr "Donor-Adresse"
 
 #: dgx-donate.php:959
 msgid "A donation has been received"
-msgstr ""
+msgstr "Eine Spende eingegangen ist"
 
 #: dgx-donate.php:960
 msgid "A donation has been received.  Here are some details about the donation."
-msgstr ""
+msgstr "Eine Spende empfangen wurde. Hier sind einige Details über die Spende."
 
 #: dgx-donate.php:978
 msgid "NOTE:  The donor is making this donation in honor of / in memory of someone."
-msgstr ""
+msgstr "HINWEIS: Der Spender wird durch diese Spende zu Ehren von / zum Gedenken an jemand."
 
 #: dgx-donate.php:979 dgx-donate.php:986
 msgid "Please see the donation details (using the link below) for more information."
-msgstr ""
+msgstr "Bitte beachten Sie die Spende Informationen (über den Link unten) für weitere Informationen."
 
 #: dgx-donate.php:985
 msgid "NOTE:  The donor is making this donation with an employer match."
-msgstr ""
+msgstr "HINWEIS: Die Geber macht diese Spende mit einem Arbeitgeber Spiel."
 
 #: dgx-donate.php:993
 msgid "Donation:"
-msgstr ""
+msgstr "Spende:"
 
 #: dgx-donate.php:994
 msgid "Amount:"
-msgstr ""
+msgstr "Betrag:"
 
 #: dgx-donate.php:997
 msgid "Click on the following link to view all details for this donation:"
-msgstr ""
+msgstr "Klicken Sie auf den folgenden Link, um alle Details für diese Spende an:"
+
 #. Plugin Name of the plugin/theme
 msgid "Seamless Donations Modified"
-msgstr ""
+msgstr "Nahtlose Spenden Geändert"
 
 #. Plugin URI of the plugin/theme
 msgid "http://allendav.com/wordpress-plugins/seamless-donations-for-wordpress/"
-msgstr ""
+msgstr "http://allendav.com/wordpress-plugins/seamless-donations-for-wordpress/"
 
 #. Description of the plugin/theme
 msgid "Making online donations easy for your visitors; making donor and donation management easy for you.  Receive donations (now including repeating donations), track donors and send customized thank you messages with Seamless Donations for WordPress.  Works with PayPal accounts."
-msgstr ""
+msgstr "Machen Online-Spenden einfach für Ihre Besucher; dass Spender und Spendenverwaltung einfach für Sie. Erhalten Spenden (jetzt einschließlich wiederholen Spenden), verfolgen Spendern und sende fertigt danke Nachrichten mit Seamless Spenden für Wordpress. Arbeitet mit PayPal-Konten."
 
 #. Author of the plugin/theme
 msgid "allendav"
-msgstr ""
+msgstr "allendav"
 
 #. Author URI of the plugin/theme
 msgid "http://www.allendav.com/"
-msgstr ""
+msgstr "http://www.allendav.com/"
+
