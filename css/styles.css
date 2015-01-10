@@ -156,3 +156,21 @@ padding: 5px 32px 32px 32px;
 }
 
 
+.dgx-donate-change-language{
+  float:right;
+}
+.dgx-donate-change-language ul{
+  list-style: none;
+}
+.dgx-donate-change-language li{
+  float:left;
+}
+.dgx-donate-change-language li a{
+  padding: 10px;
+  font-weight: bold;
+  color: black;
+}
+.dgx-donate-change-language li a:hover{
+  background-color: #eee;
+  border-radius: 5px;
+}

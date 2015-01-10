@@ -258,6 +258,7 @@ function dgx_donate_paypalstd_get_hidden_form()
 /******************************************************************************************************/
 function dgx_donate_intro_section($content)
 {
+	$content .= "<div class='dgx-donate-change-language'><ul><li><a href='?'>English</a></li><li><a href='?support_locale=da_DK'>Dansk</a></li><li><a href='?support_locale=de_DE'>Deutsch</a></li></ul></div>";
   $content .= "<p><strong>" . esc_html__("Support us", "dgx-donate") . "</strong></p>";
 	$content .= "<p>" . esc_html__("Even though everyone in Copenhagen Suborbitals are working for free, building rockets requires funding. We don’t pay salary, but we spend money buying the materials and tools we need. Certain costs cannot be avoided either, such as the rent of a construction site, rocket fuel, structural steel and transportation to the launchsite near the island of Bornholm.", "dgx-donate") . "</p>";
 	$content .= "<p>" . esc_html__("This is a crowdsourcing project – and we need your help to succeed!", "dgx-donate") . "</p>";
