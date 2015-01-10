@@ -79,16 +79,6 @@ function DgxDonationTypeSelector(){
 	//}
 
     // added by KB
-    jQuery('input.dgx-donate-pay-enabled').attr({
-		'src': '/wp_blog/wp_content/plugins/seamless-donations-modified/images/submit.png'
-	}).show();
-	
-    // added by KB
-	jQuery('img.dgx-donate-pay-disabled').attr({
-		'src': '/wp_blog/wp_content/plugins/seamless-donations-modified/images/submit.png'
-	});
-	
-    // added by KB
 	jQuery('.dgx-donate-form-section p').addClass('clr');
 	var copyPriceSection = jQuery('.dgx-donate-form-section:eq(1)').clone();
 

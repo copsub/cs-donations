@@ -25,6 +25,17 @@ License: GPL2
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
+
+function redefine_locale($locale) {
+  // return 'es_ES';
+	return $_GET['support_locale'];
+}
+
+if(isset($_GET['support_locale'])){
+	add_filter('locale','redefine_locale',10); 
+}
+
+
 require_once 'dgx-donate-admin.php';
 require_once 'dgx-donate-paypalstd.php';
 require_once 'dgx-donate-cron-jobs.php';
@@ -33,7 +44,8 @@ require_once 'inc/currency.php';
 
 /******************************************************************************************************/
 function dgx_donate_plugins_loaded() {
-	load_plugin_textdomain( 'dgx-donate', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	$language_path = plugin_basename( dirname( __FILE__ ) .'/languages' );
+  load_plugin_textdomain( 'dgx-donate', '', $language_path );
 }
 add_action( 'plugins_loaded', 'dgx_donate_plugins_loaded' );
 
@@ -474,8 +486,8 @@ function dgx_donate_get_donation_section($formContent)  //RA EDIT
 	$output = '';
 	$output .= '<div class="dgx-donate-form-section" id="dgx-donate-form-donation-section">';
 	$output .= '<div id="dgx-type-selector">';
-	$output .= '<button class="dgx-type-membership active">Membership (monthly donation)</button>';
-	$output .= '<button class="dgx-type-onetime">One time donation</button>';
+	$output .= '<button class="dgx-type-membership active">' . esc_html__( 'Membership (monthly donation)', 'dgx-donate' ) . '</button>';
+	$output .= '<button class="dgx-type-onetime">' . esc_html__( 'One time donation', 'dgx-donate' ) . '</button>';
 	$output .= '</div>';
 	$output .= "<h2>" . esc_html__( 'Donation Information', 'dgx-donate' ) . "</h2>";	
 	$output .= '<p class="clr dgx-type-membership-section">' . esc_html__( 'I would like to make a monthly donation in the amount of:', 'dgx-donate' ) . '</p>';
@@ -496,7 +508,7 @@ function dgx_donate_get_donation_section($formContent)  //RA EDIT
 
 
 	$output .= "<p><input type='radio' name='_dgx_donate_amount' value='OTHER' id='dgx-donate-other-radio' />";
-	$output .= '<label class=\"label-small\" for=\"dgx-donate-other-radio\">Other</label>';
+	$output .= '<label class=\"label-small\" for=\"dgx-donate-other-radio\">' . esc_html__( 'Other', 'dgx-donate' ) . '</label>';
 	$output .= "<input type=\"text\" class=\"aftertext\" id=\"dgx-donate-other-input\" name=\"_dgx_donate_user_amount\" />";
 	$output .= "</p>\n";
 	
@@ -728,10 +740,10 @@ function dgx_donate_get_donor_section( $form_content ) { //RA EDIT
 	$output .= "</div>\n";
 
 	$output .= "<div class='dgx-donate-form-section' id='dgx-donate-form-payment-method-section'>";
-	$output .= "<h2>Payment Method</h2>";
+	$output .= "<h2>" . esc_html__( 'Payment Method', 'dgx-donate' ) . "</h2>";
 	$output .= '<p class="clr">';
 	$output .= '<input type="radio" name="_dgx_donate_payment_method" id="radio-paypal" value="paypal" checked="checked"><label for="radio-paypal">Paypal</label> ';
-	$output .= '<input type="radio" name="_dgx_donate_payment_method" id="radio-bank" value="bank" class="horiz" ><label for="radio-bank">Bank Transfer</label>';
+	$output .= '<input type="radio" name="_dgx_donate_payment_method" id="radio-bank" value="bank" class="horiz" ><label for="radio-bank">' . esc_html__( 'Bank Transfer', 'dgx-donate' ) . '</label>';
 	$output .= '</p>';
 	$output .= "</div>\n";
 	

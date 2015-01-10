@@ -128,6 +128,8 @@ function dgx_donate_show_paypalstd_donation_form($content) //RAEDIT
 		$session_id = 'dgxdonate_' . substr( session_id(), 0, 10 ) . '_' . time();
 		$content .= "<input type=\"hidden\" name=\"_dgx_donate_session_id\" value=\"$session_id\" />";
 
+		$content = dgx_donate_intro_section($content);
+
 		// Start the outermost container
 		$content .= "<div id=\"dgx-donate-container\">\n";
 
@@ -252,6 +254,20 @@ function dgx_donate_paypalstd_get_hidden_form()
 	return $output;
 }
 
+
+/******************************************************************************************************/
+function dgx_donate_intro_section($content)
+{
+  $content .= "<p><strong>" . esc_html__("Support us", "dgx-donate") . "</strong></p>";
+	$content .= "<p>" . esc_html__("Even though everyone in Copenhagen Suborbitals are working for free, building rockets requires funding. We don’t pay salary, but we spend money buying the materials and tools we need. Certain costs cannot be avoided either, such as the rent of a construction site, rocket fuel, structural steel and transportation to the launchsite near the island of Bornholm.", "dgx-donate") . "</p>";
+	$content .= "<p>" . esc_html__("This is a crowdsourcing project – and we need your help to succeed!", "dgx-donate") . "</p>";
+	$content .= "<p>" . esc_html__("Below you can choose a one time donation, or to become a “Copenhagen Suborbitals Supporter” by donating every month. More than 1000 people from all over the world have already signed up as monthly supporters – but we need a lot more to reach our goal!", "dgx-donate") . "</p>";
+	$content .= "<p>" . esc_html__("Please choose an amount and type in your details below. When you press “Submit” you will be asked to checkout and pay via PayPal.", "dgx-donate") . "</p>";
+
+  return $content;
+}
+
+
 /******************************************************************************************************/
 function dgx_donate_paypalstd_warning_section($formContent)
 {
@@ -286,7 +302,7 @@ function dgx_donate_paypalstd_payment_section( $form_content ) {
 
 	$section = "<div class='dgx-donate-form-section' id='dgx-donate-form-payment-section'>"
 		. "<p>"
-		. "<input class='dgx-donate-pay-enabled' type='image' src='" . esc_url( $button_image_url ) . "' value='" . esc_attr__( 'Donate Now', 'dgx-donate' ) . "'/>"
+		. "<input class='dgx-donate-pay-enabled' type='submit' value='" . esc_attr__( 'Submit', 'dgx-donate' ) . "'/>"
 		. "<img class='dgx-donate-pay-disabled' src='" . esc_url( $disabled_button_image_url ) . "' />"
 		. "<img class='dgx-donate-busy' src='" . esc_url( $processing_image_url ) . "' />"
 		. "</p>"

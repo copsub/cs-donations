@@ -118,9 +118,15 @@ padding: 5px 32px 32px 32px;
 
 .dgx-donate-form-section input.dgx-donate-pay-enabled
 {
-	padding: 10px;
+	padding: 10px 20px;
 	cursor: pointer;
 	border: none;
+  background-color: black;
+  color:white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  float: right;
 }
 
 .dgx-donate-pay-disabled {
@@ -149,11 +155,4 @@ padding: 5px 32px 32px 32px;
 	background:#fd4907;
 }
 
-input.dgx-donate-pay-enabled,
-img.dgx-donate-pay-disabled {
-	float:right;
-	display:none;
-	padding:0 !important;
-	margin:0 !important;
-}
 
