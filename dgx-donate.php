@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name: Seamless Donations Modified
-Plugin URI: http://allendav.com/wordpress-plugins/seamless-donations-for-wordpress/
+Plugin Name: CS-Donations
+Plugin URI: https://github.com/copsub/cs-donations
 Description: Making online donations easy for your visitors; making donor and donation management easy for you.  Receive donations (now including repeating donations), track donors and send customized thank you messages with Seamless Donations for WordPress.  Works with PayPal accounts.
 Version: 3.1.0
 Author: allendav
