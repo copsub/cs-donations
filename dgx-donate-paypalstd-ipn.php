@@ -6,7 +6,7 @@
   */
 
 // Load WordPress   Edit RA
-include "../../../../wp-config.php";
+include "../../../wp-config.php";
 
 // Load Seamless Donations Core
 include_once "./dgx-donate.php";
