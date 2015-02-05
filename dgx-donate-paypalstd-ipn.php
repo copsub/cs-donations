@@ -132,12 +132,24 @@ class Dgx_Donate_IPN_Handler {
       // If payment_status is not "Completed", then something must have gone wrong.
       // Send an email to check this IPN response manually
       // We exclude notifications about subscribers signing up
-      if ($_POST["txn_type"] != 'subscr_signup'){
+      if ($_POST["txn_type"] == 'subscr_signup'){
+        // The user has just signed up, we do nothing
+      }else if(($_POST["txn_type"] == 'subscr_eot') || ($_POST["txn_type"] == 'subscr_cancel')){
+        // The user has cancelled his subscription
+        $this->record_latest_ipn_status('3', $_POST["payer_email"]);
+      }else if(($_POST["txn_type"] == 'subscr_failed') || ($_POST["txn_type"] == 'recurring_payment_suspended_due_to_max_failed_payment')){
+        // The payment has failed, we should talk to the user
+        $this->record_latest_ipn_status('2', $_POST["payer_email"]);
+      }else{
+        // Other cases!
         wp_mail( get_option('dgx_donate_notify_emails'), 'Seamless Donations: Please check this IPN manually, because the payment_status variable != Completed', print_r($_POST,true), '' );
         dgx_donate_debug_log('Email sent about a donation whose payment_status was not Completed');
       }
       return;
     }
+
+    // If the payment was completed, update the user field "latest_ipn_status" to the value "0"
+    $this->record_latest_ipn_status('0', $_POST["payer_email"]);
 
     // Check if we've already logged a transaction with this same transaction id
     $donation_id = get_donations_by_meta( '_dgx_donate_transaction_id', $this->transaction_id, 1 );
@@ -345,6 +357,15 @@ class Dgx_Donate_IPN_Handler {
     //   B. It's the first recurring donation (when the user subscribes). We exclude donations coming from old website.
     if ($one_time_donation == true || $donation_from_old_site == false && $first_time_recurring == true){
       dgx_donate_send_thank_you_email( $donation_id,"",(!empty($user_password)?$user_password:"") );
+    }
+  }
+
+  function record_latest_ipn_status($status, $user_email){
+    $existingUser = get_user_by( 'email', $user_email );
+    if ( $existingUser === false ) {
+      dgx_donate_debug_log("Could not record latest IPN status, user ".$user_email." not found.");
+    }else{
+      update_user_meta( $existingUser->ID, 'latest_ipn_status', $status );
     }
   }
 }
