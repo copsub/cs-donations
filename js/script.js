@@ -80,12 +80,12 @@ function DgxDonationTypeSelector(){
 
     // added by KB
     jQuery('input.dgx-donate-pay-enabled').attr({
-		'src': '/wp_blog/wp_content/plugins/seamless-donations-modified/images/submit.png'
+		'src': '/wp-content/plugins/seamless-donations-modified/images/submit.png'
 	}).show();
 	
     // added by KB
 	jQuery('img.dgx-donate-pay-disabled').attr({
-		'src': '/wp_blog/wp_content/plugins/seamless-donations-modified/images/submit.png'
+		'src': '/wp-content/plugins/plugins/seamless-donations-modified/images/submit.png'
 	});
 	
     // added by KB
