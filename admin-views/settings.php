@@ -38,6 +38,11 @@ class Dgx_Donate_Admin_Settings_View {
 			update_option( 'dgx_donate_notify_emails', $notification_emails );
 			$message = __( 'Settings updated.', 'dgx-donate' );
 		}
+		$evernote_email = ( isset( $_POST['evernoteemail'] ) ) ? $_POST['evernoteemail'] : '';
+		if ( ! empty( $notification_emails ) ) {
+			update_option( 'dgx_donate_evernote_email', $evernote_email );
+			$message = __( 'Settings updated.', 'dgx-donate' );
+		}
 
 		// Save giving level selections
 		$giving_levels = ( isset( $_POST['dgx_donate_giving_levels'] ) ) ? $_POST['dgx_donate_giving_levels'] : '';
@@ -133,6 +138,7 @@ class Dgx_Donate_Admin_Settings_View {
 		echo "<p>" . esc_html__( 'Enter one or more emails that should be notified when a new donation arrives.  You can separate multiple email addresses with commas.', 'dgx-donate' ). "</p>";
 	
 		$notify_emails = get_option('dgx_donate_notify_emails');
+		$evernote_email = get_option('dgx_donate_evernote_email');
 		echo "<form method='POST' action=''>\n";
 		echo "<input type='hidden' name='dgx_donate_settings_nonce' value='" . esc_attr( $nonce ) . "' />\n";
 	
@@ -140,6 +146,11 @@ class Dgx_Donate_Admin_Settings_View {
 		echo "<label for='notifyemails'>" . esc_html__( 'Notification Email Address(es)', 'dgx-donate' ) . "</label><br/>\n";
 		echo "<input type='text' name='notifyemails' value='" . esc_attr( $notify_emails ) ."' />\n";
 		echo "<p class='description'>" . esc_html__( 'Email address(es) that should be notified (e.g. administrators) of new donations.', 'dgx-donate' ) . "</p>\n";
+		echo "</div>\n";
+
+		echo "<div class='form-field'>\n";
+		echo "<label for='evernoteemail'>Evernote Email Address for IPN logging</label><br/>\n";
+		echo "<input type='text' name='evernoteemail' value='" . esc_attr( $evernote_email ) ."' />\n";
 		echo "</div>\n";
 		
 		echo "<p><input id='submit' class='button' type='submit' value='" . esc_attr__( 'Update', 'dgx-donate' ) . "' name='submit'></p>\n";
