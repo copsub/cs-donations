@@ -55,7 +55,7 @@ class Dgx_Donate_IPN_Handler {
     foreach ($debug_log as $debug_log_line) {
       $body .= $debug_log_line . "\n";
     }
-    $mail_sent = wp_mail( 'someone@m.evernote.com', 'Seamless donation event @CopSub_Log', $body, '' );
+    $mail_sent = wp_mail( get_option('dgx_donate_evernote_email'), 'Seamless donation event @CopSub_Log', $body, '' );
     dgx_donate_debug_log('Evernote Mail Status: ' . $mail_sent);
   }
 
