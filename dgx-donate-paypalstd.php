@@ -305,46 +305,61 @@ function dgx_donate_paypalstd_detail()
 }
 
 /******************************************************************************************************/
-function dgx_donate_paypalstd_ajax_checkout()
-{
-	$nonce = $_POST['nonce'];
 
-	if (!wp_verify_nonce($nonce, 'dgx-donate-nonce'))
-	{
-		die('Busted!');
-	}
 
-	$postData = generate_post_data();
+function dgx_donate_bank_transfer(){
+	$postData = prepare_post_data_for_bank_transfer();
 
-	// Save it all in a transient
-	$transientToken = $postData['SESSIONID'];
-	set_transient($transientToken, $postData, 14*24*60*60); // 14 days
+  // Save the donation into the Seamless Donations table
+	$donation_id = dgx_donate_create_donation_from_transient_data( $postData );
+	delete_transient( $postData['SESSIONID'] );
 
-	// Log
-	dgx_donate_debug_log( '----------------------------------------' );
-	dgx_donate_debug_log( 'Donation transaction started' );
-	dgx_donate_debug_log( 'Name: ' . $postData['FIRSTNAME'] . ' ' . $postData['LASTNAME'] );
-	dgx_donate_debug_log( 'Amount: ' . $postData['AMOUNT'] );
-	dgx_donate_debug_log( 'IPN: ' . plugins_url( '/dgx-donate-paypalstd-ipn.php', __FILE__ ) );
+  // Send a welcome email
+	$email_subject = 'Bank Transfer instructions for Copenhagen Suborbitals Donation';
 
-	// Return success to AJAX caller as " code | message "
-	// A return code of 0 indicates success, and the returnMessage is ignored
-	// A return code of 1 indicates failure, and the returnMessage contains the error message
-	// CS Modification: send a custom returnMessage for users paying through bank_transfer
-	if($_POST['paymentMethod'] == 'bank'){
-		bank_transfer_actions($postData);
-		$returnMessage = "0|SUCCESS_BANK";
+	// We only create a user for users making recurring donations
+	if($postData['REPEATING'] == '1'){
+		$email_template = 'template_bank_donation_email_recurring.html';
+		$email_content = file_get_contents(plugin_dir_path(__FILE__).$email_template);
+		$user = find_or_create_user($postData);
+  	$userdata = get_userdata( $user->ID );
+		$email_content = str_replace("%email%", $user->user_email, $email_content);
+		$email_content = str_replace("%username%", $user->user_login, $email_content);
+		$email_content = str_replace("%paymentid%", "SUPPORT".$user->ID, $email_content);
 	}else{
-		$returnMessage = "0|SUCCESS";
+		$email_template = 'template_bank_donation_email_one_time.html';
+		$email_content = file_get_contents(plugin_dir_path(__FILE__).$email_template);
+		$email_content = str_replace("%email%", $postData['EMAIL'], $email_content);
+		$email_content = str_replace("%paymentid%", "DONATION".$donation_id, $email_content);
 	}
 
-	echo $returnMessage;
+	$headers[] = 'Content-type: text/html';
 
-	die(); // this is required to return a proper result
+  wp_mail( $postData['EMAIL'], $email_subject, $email_content, $headers );
+
+  wp_mail( get_option('dgx_donate_notify_emails'), 'Copenhagen Suborbitals: A user registered for bank donation', $email_content, $headers );
+
+	wp_die('Emails sent');
 }
 
-add_action('wp_ajax_dgx_donate_paypalstd_ajax_checkout', 'dgx_donate_paypalstd_ajax_checkout');
-add_action('wp_ajax_nopriv_dgx_donate_paypalstd_ajax_checkout', 'dgx_donate_paypalstd_ajax_checkout');
+
+add_action('wp_ajax_dgx_donate_bank_transfer', 'dgx_donate_bank_transfer');
+add_action('wp_ajax_nopriv_dgx_donate_bank_transfer', 'dgx_donate_bank_transfer');
+
+
+
+function prepare_post_data_for_bank_transfer(){
+	$postData = array();
+	$postData['AMOUNT'] = $_POST['amount'];
+	$postData['CURRENCY_CODE'] = $_POST['currency'];
+	$postData['REPEATING'] = ($_POST['monthly'] == 'true') ? '1' : '0';
+	$postData['LASTNAME'] = $_POST['email'];
+	$postData['EMAIL'] = $_POST['email'];
+	$postData['PAYMENTMETHOD'] = 'bank';
+
+	return $postData;
+}
+
 
 
 function generate_post_data(){
@@ -470,52 +485,6 @@ function generate_post_data(){
 		$postData[$key] = $temp;
 	}
 	return $postData;
-}
-
-
-
-
-function bank_transfer_actions($postData){
-  // Save the donation into the Seamless Donations table
-	$donation_id = dgx_donate_create_donation_from_transient_data( $postData );
-	delete_transient( $postData['SESSIONID'] );
-
-  // Send a welcome email
-	$email_subject = 'Bank Transfer instructions for Copenhagen Suborbitals Donation';
-
-	// We only create a user for users making recurring donations
-	if($postData['REPEATING'] == '1'){
-		$email_template = 'template_bank_donation_email_recurring.html';
-		$email_content = file_get_contents(plugin_dir_path(__FILE__).$email_template);
-		$user = find_or_create_user($postData);
-  	$userdata = get_userdata( $user->ID );
-		$email_content = str_replace("%firstname%", $userdata->first_name, $email_content);
-		$email_content = str_replace("%lastname%", $userdata->last_name, $email_content);
-		$email_content = str_replace("%username%", $user->user_login, $email_content);
-		$email_content = str_replace("%email%", $user->user_email, $email_content);
-		$email_content = str_replace("%paymentid%", "SUPPORT".$user->ID, $email_content);
-		$email_content = str_replace("%postalcode%", $userdata->user_zip, $email_content);
-		$email_content = str_replace("%address%", $userdata->user_adress, $email_content);
-		$email_content = str_replace("%city%", $userdata->city, $email_content);
-		$email_content = str_replace("%country%", $userdata->country, $email_content);
-	}else{
-		$email_template = 'template_bank_donation_email_one_time.html';
-		$email_content = file_get_contents(plugin_dir_path(__FILE__).$email_template);
-		$email_content = str_replace("%firstname%", $postData['FIRSTNAME'], $email_content);
-		$email_content = str_replace("%lastname%", $postData['LASTNAME'], $email_content);
-		$email_content = str_replace("%email%", $postData['EMAIL'], $email_content);
-		$email_content = str_replace("%paymentid%", "DONATION".$donation_id, $email_content);
-		$email_content = str_replace("%postalcode%", $postData['ZIP'], $email_content);
-		$email_content = str_replace("%address%", $postData['ADDRESS'], $email_content);
-		$email_content = str_replace("%city%", $postData['CITY'], $email_content);
-		$email_content = str_replace("%country%", $postData['COUNTRY'], $email_content);
-	}
-
-	$headers[] = 'Content-type: text/html';
-
-  wp_mail( $postData['EMAIL'], $email_subject, $email_content, $headers );
-
-  wp_mail( get_option('dgx_donate_notify_emails'), 'Copenhagen Suborbitals: A user registered for bank donation', $email_content, $headers );
 }
 
 
