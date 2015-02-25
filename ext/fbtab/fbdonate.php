@@ -255,6 +255,8 @@ function payWithBankTransfer(){
 	<input type="hidden" name="item_number" value="1234"> <!-- not in single donation -->
 	<input type="hidden" name="no_note" value="1">
 	<input type="hidden" name="no_shipping" value="1">
+	<input type="hidden" name="return" value="http://copenhagensuborbitals.com/">
+	<input type="hidden" name="cancel_return" value="http://copenhagensuborbitals.com/">
 	<input type="hidden" name="src" value="1">	<!-- not in single donation -->
 	<input type="hidden" name="p3" value="1">   <!-- not in single donation -->
 	<input type="hidden" name="t3" value="M">   <!-- not in single donation -->
