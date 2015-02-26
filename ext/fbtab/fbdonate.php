@@ -113,6 +113,9 @@ input#paypal-submit{
 #bank-transfer-modal a:hover{
   cursor:pointer;
 }
+#paypal-form{
+  display: none;
+}
 
 
 </style>
@@ -128,21 +131,7 @@ input#paypal-submit{
 </script>
 
 <script>
-function CopyFields(f) {
-    f.amount.value = f.a3.value;
-}
 
-function DonationType(f) {
-  	if(f.supporter.checked == true) {
-    	f.cmd.value = "_xclick-subscriptions";
-    	f.item_name.value = "Copenhagen Suborbitals Monthly Donation";
-    	f.bn.value = "PP-SubscriptionsBF:btn_subscribeCC_LG.gif:NonHosted";
-	} else {
-    	f.cmd.value = "_donations";
-    	f.item_name.value = "Copenhagen Suborbitals Single Donation";
-    	f.bn.value = "PP-DonationsBF:btn_donateCC_LG.gif:NonHosted";
-	}	
-}
 
 
 $.get("http://ipinfo.io", function (response) {
@@ -167,29 +156,37 @@ $.get("http://ipinfo.io", function (response) {
 }, "jsonp");
 
 
-$(document).ready(function () {
-
-    $('#donationform').validate({ // initialize the plugin
-        rules: {
-            a3: {
-                required: true,
-                minlength: 1
-            }
-        }
-    });
-
-});
-
-
 function payWithBankTransferCallback(data){
   $('#bank-transfer-modal-content').html('<h1>Thank you for your donation!<br/></h1><h3>Please check your email.</h3>');
 }
 
 
 function payWithBankTransfer(){
+  if ($('#amount-field').val() == ''){
+    alert('Please enter an amount');
+    return;
+  }
   var data = { action: 'dgx_donate_bank_transfer', email: $('#bank-transfer-email').val(), amount: $('#amount-field').val(), currency: $('#currency_code').val(), monthly: $('#supporter').is(":checked") };
   jQuery.post( '/wp-admin/admin-ajax.php', data, payWithBankTransferCallback );
   $('#bank-transfer-modal-content').html('<h3>Loading...</h3>');
+  return false;
+}
+
+function payWithPaypalCallback(data){
+  // Copy the encrypted string into the form field
+  $('#encrypted-field').val(data);
+
+  // Submit the form to Paypal
+  $('#paypal-form').submit();
+}
+
+function payWithPaypal(){
+  if ($('#amount-field').val() == ''){
+    alert('Please enter an amount');
+    return;
+  }
+  var data = { action: 'dgx_donate_paypal', amount: $('#amount-field').val(), currency: $('#currency_code').val(), monthly: $('#supporter').is(":checked") };
+  jQuery.post( '/wp-admin/admin-ajax.php', data, payWithPaypalCallback );
   return false;
 }
 
@@ -202,99 +199,72 @@ function payWithBankTransfer(){
 
 <div style="position:releative;">
 
-<!-- "Donate" Helvetica Bold 95.15 -->
-<div style="position:absolute;left:39px;top:83px;font: 95px helvetica, sans-serif; font-weight: bold; color: #FFFFFF;padding:0px;margin:0px;">
-	Donate
-</div>  
+  <!-- "Donate" Helvetica Bold 95.15 -->
+  <div style="position:absolute;left:39px;top:83px;font: 95px helvetica, sans-serif; font-weight: bold; color: #FFFFFF;padding:0px;margin:0px;">Donate</div>
 
-<!-- "How much..." Helvetica Regular 20 -->
-<div style="position:absolute;left:45px;top:180px;font: 20px helvetica, sans-serif; color: #FFFFFF;">
-	How much would you like to give?
-</div>  
+  <!-- "How much..." Helvetica Regular 20 -->
+  <div style="position:absolute;left:45px;top:180px;font: 20px helvetica, sans-serif; color: #FFFFFF;">How much would you like to give?</div>
 
-<!-- "Make this a month..." Helvetica Regular 20 -->
-<div style="position:absolute;left:75px;top:293px;font: 20px helvetica, sans-serif; color: #ff4f00;padding:0px;margin:0px;">
-	<label for="supporter">
-	Make this a monthly donation
-	</label>
-</div> 
- 
-
-<!-- "Even though..." Helvetica Regular 18 -->
-<div style="position:absolute;left:45px;top:485px;width:310px;font: 18px helvetica, sans-serif; color: #FFFFFF;line-height: 30px;">
-	Even though everyone in Copenhagen Suborbitals are working for free, we need earth money to build spaceships. Tools, rent and materials are not free. This is a 100 % crowdfunded project. we need you to get into space! 
-</div> 
-
-
-<!-- "Thanks" Helvetica Regular 80 -->
-<div style="position:absolute;left:305px;top:1165px;font: 80px helvetica, sans-serif; color: #FFFFFF;margin:0px;padding:0px;">
-	Thanks
-</div> 
-
-<!-- "Now we're closer" Helvetica Regular 20 -->
-<div style="position:absolute;left:413px;top:1240px;font: 20px helvetica, sans-serif; color: #ff4f00;">
-	Now we're closer
-</div> 
-
-
-<!-- Dividerline 1 -->
-<div style="position:absolute;left:45px;top:276px;width:310px;background:url('http://copenhagensuborbitals.com/ext/fbtab/dividerline.png') no-repeat;height:1px; ">
-
-</div>
-
-<!-- Dividerline 2 -->
-<div style="position:absolute;left:45px;top:326px;width:310px;background:url('http://copenhagensuborbitals.com/ext/fbtab/dividerline.png') no-repeat;height:1px; ">
-
-</div> 
-
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" id="donationform">
-	<input type="hidden" name="cmd" value="_donations">
-	<input type="hidden" name="business" value="6D4XG7HWPHG9U">
-	<input type="hidden" name="lc" value="US">
-	<input type="hidden" name="item_name" value="Copenhagen Suborbitals Single Donation">
-	<input type="hidden" name="item_number" value="1234"> <!-- not in single donation -->
-	<input type="hidden" name="no_note" value="1">
-	<input type="hidden" name="no_shipping" value="1">
-	<input type="hidden" name="return" value="http://copenhagensuborbitals.com/">
-	<input type="hidden" name="cancel_return" value="http://copenhagensuborbitals.com/">
-	<input type="hidden" name="src" value="1">	<!-- not in single donation -->
-	<input type="hidden" name="p3" value="1">   <!-- not in single donation -->
-	<input type="hidden" name="t3" value="M">   <!-- not in single donation -->
-	<input type="hidden" name="amount"  value="20">
-	<input type="hidden" name="bn" value="PP-SubscriptionsBF:btn_subscribeCC_LG.gif:NonHosted">
-	<input type="checkbox" id="supporter" name="supporter" value="supporter" onchange="DonationType(this.form)" style="">
-	<input type="text" name="a3" id="amount-field" value=""  onchange="CopyFields(this.form)" style="">
-
-<select name="currency_code" id="currency_code">
-  <option value="USD">USD</option>
-  <option value="DKK">DKK</option>
-  <option value="EUR">EURO</option>
-</select>
-	
-
-  <div class="donate-button" id="paypal-donate" onclick="$('#paypal-submit').trigger('click');">
-    <h3>Donate</h3>
-    <p>via PayPal / Credit Card</p>
+  <!-- "Make this a month..." Helvetica Regular 20 -->
+  <div style="position:absolute;left:75px;top:293px;font: 20px helvetica, sans-serif; color: #ff4f00;padding:0px;margin:0px;">
+    <label for="supporter">Make this a monthly donation</label>
   </div>
 
-  <div class="donate-button" id="bank-donate" onclick="$('#bank-transfer-modal').show();">
-    <h3>Donate</h3>
-    <p>via Bank Transfer</p>
+  <!-- "Even though..." Helvetica Regular 18 -->
+  <div style="position:absolute;left:45px;top:485px;width:310px;font: 18px helvetica, sans-serif; color: #FFFFFF;line-height: 30px;">
+    Even though everyone in Copenhagen Suborbitals are working for free, we need earth money to build spaceships. Tools, rent and materials are not free. This is a 100 % crowdfunded project. we need you to get into space!
   </div>
 
-  <input type="submit" value="Donate" id="paypal-submit" style="" />
+  <!-- "Thanks" Helvetica Regular 80 -->
+  <div style="position:absolute;left:305px;top:1165px;font: 80px helvetica, sans-serif; color: #FFFFFF;margin:0px;padding:0px;">Thanks</div>
 
-	<img alt=""  src="https://www.paypalobjects.com/da_DK/i/scr/pixel.gif" width="1" height="1">
-</form>
+  <!-- "Now we're closer" Helvetica Regular 20 -->
+  <div style="position:absolute;left:413px;top:1240px;font: 20px helvetica, sans-serif; color: #ff4f00;">Now we're closer</div>
 
-<div id="bank-transfer-modal">
-  <a href="#" id="close" onclick="$('#bank-transfer-modal').hide()">X</a>
-  <form action="#" id="bank-transfer-modal-content" onsubmit="payWithBankTransfer()">
-    <p>Please enter your email address so we can send you the donation instructions:</p>
-    <input id="bank-transfer-email" type="text" name="email"/>
-    <a class="button" href="#" onclick="payWithBankTransfer()">Send</a>
+  <!-- Dividerline 1 -->
+  <div style="position:absolute;left:45px;top:276px;width:310px;background:url('http://copenhagensuborbitals.com/ext/fbtab/dividerline.png') no-repeat;height:1px; "></div>
+
+  <!-- Dividerline 2 -->
+  <div style="position:absolute;left:45px;top:326px;width:310px;background:url('http://copenhagensuborbitals.com/ext/fbtab/dividerline.png') no-repeat;height:1px; "></div>
+
+  <form action="" id="donationform">
+    <input type="checkbox" id="supporter" name="supporter" value="supporter" style="">
+    -
+    <input type="text" name="a3" id="amount-field" value="" style="">
+    <select name="currency_code" id="currency_code">
+      <option value="USD">USD</option>
+      <option value="DKK">DKK</option>
+      <option value="EUR">EURO</option>
+    </select>
+
+    <div class="donate-button" id="paypal-donate" onclick="payWithPaypal();">
+      <h3>Donate</h3>
+      <p>via PayPal / Credit Card</p>
+    </div>
+
+    <div class="donate-button" id="bank-donate" onclick="$('#bank-transfer-modal').show();">
+      <h3>Donate</h3>
+      <p>via Bank Transfer</p>
+    </div>
+
   </form>
-</div>
+
+  <div id="bank-transfer-modal">
+    <a href="#" id="close" onclick="$('#bank-transfer-modal').hide()">X</a>
+    <form action="#" id="bank-transfer-modal-content" onsubmit="payWithBankTransfer()">
+      <p>
+        Please enter your email address so we can send you the donation instructions:
+      </p>
+      <input id="bank-transfer-email" type="text" name="email"/>
+      <a class="button" href="#" onclick="payWithBankTransfer()">Send</a>
+    </form>
+  </div>
+
+  <form id="paypal-form" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+    <input type="hidden" name="cmd" value="_s-xclick">
+    <input type="hidden" id="encrypted-field" name="encrypted" value="">
+    <input type="submit" value="Donate">
+  </form>
 
 </div>
 
