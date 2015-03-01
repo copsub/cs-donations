@@ -54,6 +54,10 @@ left:165px;
 top:215px;
 }
 
+#paypal-form{
+  display: none;
+}
+
 </style>
 
 <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
@@ -69,18 +73,6 @@ top:215px;
 <script>
 function CopyFields(f) {
     f.amount.value = f.a3.value;
-}
-
-function DonationType(f) {
-  	if(f.supporter.checked == true) {
-    	f.cmd.value = "_xclick-subscriptions";
-    	f.item_name.value = "Copenhagen Suborbitals Monthly Donation";
-    	f.bn.value = "PP-SubscriptionsBF:btn_subscribeCC_LG.gif:NonHosted";
-	} else {
-    	f.cmd.value = "_donations";
-    	f.item_name.value = "Copenhagen Suborbitals Single Donation";
-    	f.bn.value = "PP-DonationsBF:btn_donateCC_LG.gif:NonHosted";
-	}	
 }
 
 
@@ -106,18 +98,24 @@ $.get("http://ipinfo.io", function (response) {
 }, "jsonp");
 
 
-$(document).ready(function () {
 
-    $('#donationform').validate({ // initialize the plugin
-        rules: {
-            a3: {
-                required: true,
-                minlength: 1
-            }
-        }
-    });
+function payWithPaypalCallback(data){
+  // Copy the encrypted string into the form field
+  $('#encrypted-field').val(data);
 
-});
+  // Submit the form to Paypal
+  $('#paypal-form').submit();
+}
+
+function payWithPaypal(){
+  if ($('#amount-field').val() == ''){
+    alert('Please enter an amount');
+    return;
+  }
+  var data = { action: 'dgx_donate_paypal', amount: $('#amount-field').val(), currency: $('#currency_code').val(), monthly: $('#supporter').is(":checked") };
+  jQuery.post( '/wp-admin/admin-ajax.php', data, payWithPaypalCallback );
+  return false;
+}
 
 </script>
 
@@ -162,24 +160,9 @@ $(document).ready(function () {
 
 </div> 
 
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" id="donationform">
-	<input type="hidden" name="cmd" value="_donations">
-	<input type="hidden" name="business" value="6D4XG7HWPHG9U">
-	<input type="hidden" name="lc" value="US">
-	<input type="hidden" name="item_name" value="Copenhagen Suborbitals Single Donation">
-	<input type="hidden" name="item_number" value="1234"> <!-- not in single donation -->
-	<input type="hidden" name="no_note" value="1">
-	<input type="hidden" name="no_shipping" value="1">
-	<input type="hidden" name="return" value="https://www.facebook.com/pages/CS-Test/1614842812079415?sk=app_208195102528120&ty=1">
-	<input type="hidden" name="cancel_return" value="https://www.facebook.com/pages/CS-Test/1614842812079415?sk=app_208195102528120">
-	<input type="hidden" name="source" value="facebook">
-	<input type="hidden" name="src" value="1">	<!-- not in single donation -->
-	<input type="hidden" name="p3" value="1">   <!-- not in single donation -->
-	<input type="hidden" name="t3" value="M">   <!-- not in single donation -->
-	<input type="hidden" name="amount"  value="20">
-	<input type="hidden" name="bn" value="PP-SubscriptionsBF:btn_subscribeCC_LG.gif:NonHosted">
-	<input type="checkbox" id="supporter" name="supporter" value="supporter" onchange="DonationType(this.form)" style="">
-	<input type="text" name="a3"  value=""  onchange="CopyFields(this.form)" style="">
+<form id="donationform" onsubmit="payWithPaypal(); return false;">
+	<input type="checkbox" id="supporter" name="supporter" value="supporter" style="">
+	<input type="text" name="a3" id="amount-field" value="" style="">
 
 <select name="currency_code" id="currency_code">
   <option value="USD">USD</option>
@@ -187,12 +170,17 @@ $(document).ready(function () {
   <option value="EUR">EURO</option>
 </select>	
 	
-	<input type="submit" value="Donate" style="" />
+	<input type="submit" value="Donate" style="" onclick="payWithPaypal(); return false;" />
 
-	<img alt=""  src="https://www.paypalobjects.com/da_DK/i/scr/pixel.gif" width="1" height="1">
 </form>
 
 </div>
+
+<form id="paypal-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+    <input type="hidden" name="cmd" value="_s-xclick">
+    <input type="hidden" id="encrypted-field" name="encrypted" value="">
+    <input type="submit" value="Donate">
+  </form>
 
 </body>
 </html>

@@ -260,7 +260,7 @@ function payWithPaypal(){
     </form>
   </div>
 
-  <form id="paypal-form" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+  <form id="paypal-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
     <input type="hidden" name="cmd" value="_s-xclick">
     <input type="hidden" id="encrypted-field" name="encrypted" value="">
     <input type="submit" value="Donate">

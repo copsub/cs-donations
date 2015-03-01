@@ -384,8 +384,8 @@ function dgx_donate_paypal(){
 	}
 	$paypal_options = array(
 		'cmd' => $cmd,
-    'business' => 'ignaci_1333211594_biz@ihuerta.net',
-    'cert_id' => 'YXVD8ZQKBYCDL',
+    'business' => 'kontingent@raketvenner.dk',
+    'cert_id' => 'BD3LE43A5BWPJ',
     'lc' => 'US',
     'invoice' => '',
     'currency_code' => $_POST['currency'],
