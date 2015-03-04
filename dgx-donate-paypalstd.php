@@ -395,7 +395,8 @@ function dgx_donate_paypal(){
 		'amount' => $_POST['amount'],
 		'a3' => $_POST['amount'],
 		'p3' => '1',
-		't3' => 'M'
+		't3' => 'M',
+		'src' => '1'
 	);
 
 	wp_die(paypal_encrypt($paypal_options));
