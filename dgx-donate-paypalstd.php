@@ -396,7 +396,9 @@ function dgx_donate_paypal(){
 		'a3' => $_POST['amount'],
 		'p3' => '1',
 		't3' => 'M',
-		'src' => '1'
+		'src' => '1',
+		'return' => 'http://copenhagensuborbitals.com/ext/fbtab/fbthankyou.php',
+		'cancel_return' => 'http://copenhagensuborbitals.com/support-us/'
 	);
 
 	wp_die(paypal_encrypt($paypal_options));
