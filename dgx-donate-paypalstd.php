@@ -384,7 +384,7 @@ function dgx_donate_paypal(){
 	}
 	$paypal_options = array(
 		'cmd' => $cmd,
-    'business' => 'kontingent@raketvenner.dk',
+    'business' => 'donate@copsub.com',
     'cert_id' => 'BD3LE43A5BWPJ',
     'lc' => 'US',
     'invoice' => '',
