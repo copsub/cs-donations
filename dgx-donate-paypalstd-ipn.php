@@ -260,8 +260,7 @@ class Dgx_Donate_IPN_Handler {
         $member_info[strtr($key,array('_dgx_donate_add_to_mailing_list' => 'mailing_list'))] =   $donation[$key][0];
       }
     }
-    /* Does the user already exist in the db? (check using email) */
-    $existingUser = get_user_by( 'email', $member_info['email'] );
+    $existingUser = $this->copsub_find_existing_user($member_info['email']);
 
     if ( $existingUser === false ) {
 
@@ -323,6 +322,23 @@ class Dgx_Donate_IPN_Handler {
     update_user_meta( $user_id, 'donation_method', 'Paypal' );
 
     return array($user_id, $member_info['user_pass']);
+  }
+
+  /* Does the user already exist in the db? */
+  // First we search in the paypal_id field, and if we don't find it, we search in the email field
+  function copsub_find_existing_user($email){
+    $existingUser = reset(get_users(
+      array(
+        'meta_key' => 'paypal_id',
+        'meta_value' => $email,
+        'number' => 1,
+        'count_total' => false
+      )
+    ));
+    if ( $existingUser === false ) {
+      $existingUser = get_user_by( 'email', $email );
+    }
+    return $existingUser;
   }
 
   function copsub_handle_recurring_donation_old_website($donation_id){
