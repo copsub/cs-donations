@@ -368,7 +368,8 @@ $MY_KEY_FILE = "/home/web/paypal_certificates/cs-prvkey.pem";
 # public certificate file to use
 $MY_CERT_FILE = "/home/web/paypal_certificates/cs-pubcert.pem";
 
-# Paypal's public certificate
+# Paypal's public certificate (Paypal has a different one for the sandbox)
+// $PAYPAL_CERT_FILE = "/home/web/paypal_certificates/paypal_sandbox_cert.pem";
 $PAYPAL_CERT_FILE = "/home/web/paypal_certificates/paypal_cert.pem";
 
 # path to the openssl binary
@@ -386,6 +387,8 @@ function dgx_donate_paypal(){
 		'cmd' => $cmd,
     'business' => 'donate@copsub.com',
     'cert_id' => 'BD3LE43A5BWPJ',
+    // 'business' => 'ignaci_1333211594_biz@ihuerta.net',
+    // 'cert_id' => 'NNKRJEJDVPRQC',
     'lc' => 'US',
     'invoice' => '',
     'currency_code' => $_POST['currency'],

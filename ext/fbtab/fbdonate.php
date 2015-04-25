@@ -260,6 +260,7 @@ function payWithPaypal(){
     </form>
   </div>
 
+  <!-- Replace with https://www.sandbox.paypal.com/cgi-bin/webscr for testing in the sandbox. Remember to change also the settings in dgx-donate-paypalstd.php -->
   <form id="paypal-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
     <input type="hidden" name="cmd" value="_s-xclick">
     <input type="hidden" id="encrypted-field" name="encrypted" value="">
