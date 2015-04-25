@@ -327,15 +327,14 @@ class Dgx_Donate_IPN_Handler {
   /* Does the user already exist in the db? */
   // First we search in the paypal_id field, and if we don't find it, we search in the email field
   function copsub_find_existing_user($email){
-    $existingUser = reset(get_users(
-      array(
-        'meta_key' => 'paypal_id',
-        'meta_value' => $email,
-        'number' => 1,
-        'count_total' => false
-      )
-    ));
-    if ( $existingUser === false ) {
+     $existingUser = get_users(
+       array(
+         'meta_key' => 'paypal_id',
+         'meta_value' => $email
+       )
+     )[0];
+
+    if ( empty($existingUser) ) {
       $existingUser = get_user_by( 'email', $email );
     }
     return $existingUser;
@@ -377,7 +376,7 @@ class Dgx_Donate_IPN_Handler {
   }
 
   function record_latest_ipn_status($status, $user_email){
-    $existingUser = get_user_by( 'email', $user_email );
+    $existingUser = $this->copsub_find_existing_user($user_email );
     if ( $existingUser === false ) {
       dgx_donate_debug_log("Could not record latest IPN status, user ".$user_email." not found.");
     }else{
