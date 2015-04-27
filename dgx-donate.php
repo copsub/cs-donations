@@ -176,7 +176,8 @@ function dgx_donate_display_thank_you()
 /******************************************************************************************************/
 function dgx_donate_debug_log($message)
 {
-	$max_log_line_count = 200;
+	error_log($message);
+	$max_log_line_count = 2000;
 
 	$debug_log = get_option( 'dgx_donate_log' );
 
