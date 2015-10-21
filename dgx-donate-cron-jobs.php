@@ -3,7 +3,7 @@
   // This cron jobs are based on this documentation: http://codex.wordpress.org/Function_Reference/wp_schedule_event
 
   // First, we setup a hook that will be triggered every month
-  add_action( 'wp', 'prefix_setup_schedule' );
+  // add_action( 'wp', 'prefix_setup_schedule' );
   function prefix_setup_schedule() {
     if ( ! wp_next_scheduled( 'seamless_donation_monthly_jobs' ) ) {
       wp_schedule_event( time(), 'monthly', 'seamless_donation_monthly_jobs');
