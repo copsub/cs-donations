@@ -386,7 +386,7 @@ function dgx_donate_paypal(){
 	$paypal_options = array(
 		'cmd' => $cmd,
     'business' => 'donate@copsub.com',
-    'cert_id' => 'BD3LE43A5BWPJ',
+    'cert_id' => '9GSX68YKWRUQW',
     // 'business' => 'ignaci_1333211594_biz@ihuerta.net',
     // 'cert_id' => 'NNKRJEJDVPRQC',
     'lc' => 'US',
